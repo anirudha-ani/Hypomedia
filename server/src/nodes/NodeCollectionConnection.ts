@@ -213,4 +213,33 @@ export class NodeCollectionConnection {
     }
     return failureServiceResponse('Failed to update node ' + nodeId + ' filePath.path')
   }
+
+  /**
+   * Seach nodes in the database
+   * Returns successfulServiceResponse with INode[] that matches with the query string
+   *
+   * @param {String} queryString
+   * @return successfulServiceResponse<INode>
+   */
+  async searchNodes(queryString: String): Promise<IServiceResponse<INode[]>> {
+    const roots: INode[] = []
+    await this.client.db().collection(this.collectionName).createIndex({
+      title: 'text',
+      content: 'text',
+    })
+    const sort = { score: { $meta: 'textScore' } }
+
+    await this.client
+      .db()
+      .collection(this.collectionName)
+      .find({ $text: { $search: queryString } })
+      .sort(sort)
+      .forEach(function(node) {
+        const validNode = isINode(node)
+        if (validNode) {
+          roots.push(node)
+        }
+      })
+    return successfulServiceResponse(roots)
+  }
 }

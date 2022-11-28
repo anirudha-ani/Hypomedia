@@ -1,0 +1,138 @@
+@import '../../../global/globalCssVariables';
+$input-margin: 10px;
+
+.modal-font {
+  font-family: 'Inter', sans-serif;
+}
+
+.modal-treeView {
+  max-height: $node-manager-max-height-in-modal;
+  overflow: auto;
+}
+
+.modal-input {
+  margin-top: $input-margin;
+}
+
+.modal-section {
+  border-top: solid 1px $secondary-background-color;
+  margin-top: 15px;
+  padding-top: 10px;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  .modal-title-tag {
+    margin-right: 5px;
+    background-color: $selected-color;
+    color: black;
+    padding: 3px 10px;
+    border-radius: 4px;
+    user-select: none;
+  }
+
+  .modal-title-header {
+    font-weight: bold;
+  }
+}
+
+.modal-error {
+  color: white;
+  font-size: 0.8rem;
+  background-color: $error-color;
+  padding: 5px 10px;
+  margin: 0px 20px;
+  position: absolute;
+  left: 0;
+  font-weight: 500;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: row;
+  height: 500px;
+  width: 400px;
+}
+
+.modal-footer-buttons {
+  display: flex;
+  flex-direction: row;
+  font-weight: 500;
+}
+
+.left-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.linkMenu {
+  width: 100%;
+  padding-top: 20px;
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+
+  .imagePreviewContainer {
+    width: fit-content;
+    height: fit-content;
+  }
+
+  .imagePreview {
+    overflow: hidden;
+    img {
+      border-radius: 3px;
+      padding: 0;
+      // height: 300px;
+      object-fit: cover;
+    }
+  }
+}
+
+.anchorItem {
+  cursor: pointer;
+  padding: 10px;
+  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &:hover {
+    background-color: $anchor-hover-background-color;
+  }
+
+  &.selected {
+    background-color: $selected-color;
+    &:hover {
+      background-color: darken($selected-color, 20);
+    }
+  }
+  .anchorPreview {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .anchorPreview-image {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .anchorPreview-text {
+      border-radius: 2px;
+      // color: blue;
+      font-weight: bold;
+      font-size: 1rem;
+      overflow: hidden;
+      width: 100%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      // text-decoration: underline;
+      width: fit-content;
+    }
+  }
+}
