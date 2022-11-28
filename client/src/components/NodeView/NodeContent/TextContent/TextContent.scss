@@ -7,10 +7,147 @@
     cursor: pointer;
   }
 
+  // It was taken from the documentation found here - https://tiptap.dev/api/marks/code
+  code {
+    background-color: rgba(#616161, 0.1);
+    border-radius: 0.25em;
+    box-decoration-break: clone;
+    color: #616161;
+    font-size: 0.9rem;
+    padding: 0.25em;
+  }
+
+  // This is taken from the documentation found here - https://tiptap.dev/api/nodes/blockquote
+
+  blockquote {
+    border-left: 3px solid rgba(#0d0d0d, 0.1);
+    padding-left: 1rem;
+  }
+
   // TODO Make the editor and menu look nice!
 }
 
 li {
   padding: 0 1rem;
   list-style-position: inside;
+}
+
+.active-textEditorButton {
+  font-size: 15px;
+  user-select: none;
+  margin-right: 5px;
+  border-color: black;
+  // Font options
+  font-family: $header-font;
+
+  // Color
+  padding: 3px 15px;
+  border-radius: 5px;
+  // gap: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  // margin: 1000;
+  background-color: $selected-color;
+
+  &:hover {
+    background-color: darken($secondary-background-color, 10);
+  }
+
+  &.whiteButton {
+    background-color: white;
+    &:hover {
+      background-color: darken(white, 3);
+    }
+  }
+
+  &.active {
+    background-color: $selected-color;
+    &:hover {
+      background-color: darken($selected-color, 20);
+    }
+  }
+
+  .icon {
+    font-size: 17px;
+  }
+}
+
+.textEditorButton {
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: center;
+  // align-items: center;
+  // width: max-content;
+  // height: 70%;
+  font-size: 15px;
+  user-select: none;
+  margin-right: 5px;
+  border-color: black;
+  // Font options
+  font-family: $header-font;
+
+  // Color
+  padding: 3px 15px;
+  border-radius: 5px;
+  // gap: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  // margin: 1000;
+  background-color: $secondary-background-color;
+
+  &:hover {
+    background-color: darken($secondary-background-color, 10);
+  }
+
+  &.whiteButton {
+    background-color: white;
+    &:hover {
+      background-color: darken(white, 3);
+    }
+  }
+
+  &.active {
+    background-color: $selected-color;
+    &:hover {
+      background-color: darken($selected-color, 20);
+    }
+  }
+
+  .icon {
+    font-size: 17px;
+  }
+}
+
+.saveButton {
+  font-size: 15px;
+  user-select: none;
+  margin-right: 5px;
+  margin-left: 100px;
+  border-color: black;
+  // Font options
+  font-family: $header-font;
+
+  // Color
+  padding: 3px 15px;
+  border-radius: 5px;
+  // gap: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  // margin: 1000;
+  background-color: greenyellow;
+
+  &:hover {
+    background-color: darken(greenyellow, 30);
+  }
+
+  &.active {
+    background-color: $selected-color;
+    &:hover {
+      background-color: darken($selected-color, 20);
+    }
+  }
+
+  .icon {
+    font-size: 17px;
+  }
 }

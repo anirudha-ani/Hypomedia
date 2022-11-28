@@ -6,10 +6,11 @@ interface IEditableTextProps {
   editing: boolean
   onEdit: (newText: string) => void
   setEditing: (editing: boolean) => void
+  onContextMenu: () => void
 }
 
 export const EditableText = (props: IEditableTextProps) => {
-  const { editing, text, onEdit, setEditing } = props
+  const { editing, text, onEdit, setEditing, onContextMenu } = props
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onEdit(event.target.value)
@@ -24,6 +25,12 @@ export const EditableText = (props: IEditableTextProps) => {
       defaultValue={text}
     ></input>
   ) : (
-    <div className="displayText">{text}</div>
+    <div
+      className="displayText"
+      onDoubleClick={(e) => setEditing(true)}
+      onContextMenu={onContextMenu}
+    >
+      {text}
+    </div>
   )
 }

@@ -3,6 +3,14 @@ import * as fa from 'react-icons/fa'
 import * as ri from 'react-icons/ri'
 import { fetchLinks } from '..'
 import { useHistory } from 'react-router-dom'
+import {
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+} from '@chakra-ui/react'
+
 import { INodeContentProps } from '../NodeContent'
 import './ImageContent.scss'
 import { useRecoilValue, useRecoilState, useSetRecoilState } from 'recoil'
@@ -13,10 +21,22 @@ import {
   currentNodeState,
   startAnchorState,
   refreshLinkListState,
+  alertMessageState,
+  alertOpenState,
+  alertTitleState,
 } from '../../../../global/Atoms'
 import { FrontendAnchorGateway } from '../../../../anchors'
+import { getMeta } from '../../../Modals/CreateNodeModal/createNodeUtils'
 import { FrontendNodeGateway } from '../../../../nodes'
-import { Extent, IAnchor, IImageExtent, INode, isIImageExtent } from '../../../../types'
+import {
+  Extent,
+  IAnchor,
+  IImageExtent,
+  INode,
+  isIImageExtent,
+  makeINodeProperty,
+  INodeProperty,
+} from '../../../../types'
 import './ImageContent.scss'
 
 interface IImageContentProps {}
@@ -31,8 +51,16 @@ export const ImageContent = () => {
   const [selectedAnchors, setSelectedAnchors] = useRecoilState(selectedAnchorsState)
   const [selectedExtent, setSelectedExtent] = useRecoilState(selectedExtentState)
   const setSelectedNode = useSetRecoilState(selectedNodeState)
+  const setAlertIsOpen = useSetRecoilState(alertOpenState)
+  const setAlertTitle = useSetRecoilState(alertTitleState)
+  const setAlertMessage = useSetRecoilState(alertMessageState)
 
   const content = currentNode.content
+
+  const [imageHeight, setImageHeight] = useState('300')
+  const [imageWidth, setImageWidth] = useState('0')
+  const [imageResizedHeight, setImageResizedHeight] = useState('0')
+  const [imageResizedWidth, setImageResizedWidth] = useState('0')
 
   /* State variable to keep track of anchors rendered on image */
   const [imageAnchors, setImageAnchors] = useState<JSX.Element[]>([])
@@ -272,6 +300,26 @@ export const ImageContent = () => {
     }
   }
 
+  // This fetches the meta data of image and assigns it to appropriate state variable
+  useEffect(() => {
+    const fetchData = async () => {
+      const width = await (await getMeta(currentNode.content)).normalizedWidth
+      setImageWidth(String(width))
+      if (currentNode.height === '0') {
+        setImageResizedHeight(imageHeight)
+      } else {
+        setImageResizedHeight(currentNode.height)
+      }
+
+      if (currentNode.width === '0') {
+        setImageResizedWidth(String(width))
+      } else {
+        setImageResizedWidth(currentNode.width)
+      }
+    }
+    fetchData()
+  }, [currentNode])
+
   useEffect(() => {
     // this code ensures that an extent selected on one node doesn't display on another node
     setSelectedExtent(null)
@@ -383,8 +431,100 @@ export const ImageContent = () => {
     }
   }
 
+  // This takes the image source and prefered render height width and return an image component
+  const generateImage = (src: string, imgHeight: number, imgWidth: number) => {
+    return <img src={content} style={{ height: imgHeight, width: imgWidth }} />
+  }
+
+  // This resets the image to original size normalized with height = 300
+  // Also updates the DB accordingly
+  const resetResize = async () => {
+    setImageResizedHeight(imageHeight)
+    setImageResizedWidth(imageWidth)
+    const nodeProperty: INodeProperty = makeINodeProperty('height', imageHeight)
+    const contentUpdateResp = await FrontendNodeGateway.updateNode(currentNode.nodeId, [
+      nodeProperty,
+    ])
+    if (!contentUpdateResp.success) {
+      setAlertIsOpen(true)
+      setAlertTitle('Image height update failed')
+      setAlertMessage(contentUpdateResp.message)
+    }
+
+    const nodeProperty2: INodeProperty = makeINodeProperty('width', imageWidth)
+    const contentUpdateResp2 = await FrontendNodeGateway.updateNode(currentNode.nodeId, [
+      nodeProperty2,
+    ])
+    if (!contentUpdateResp.success) {
+      setAlertIsOpen(true)
+      setAlertTitle('Image width update failed')
+      setAlertMessage(contentUpdateResp.message)
+    }
+  }
+
+  // This function updates the state variable for height and updates the corrospondent DB entry
+  const resizeHeight = async (height: string) => {
+    const nodeProperty: INodeProperty = makeINodeProperty('height', height)
+    const contentUpdateResp = await FrontendNodeGateway.updateNode(currentNode.nodeId, [
+      nodeProperty,
+    ])
+    if (!contentUpdateResp.success) {
+      setAlertIsOpen(true)
+      setAlertTitle('Image height update failed')
+      setAlertMessage(contentUpdateResp.message)
+    }
+    setImageResizedHeight(height)
+  }
+
+  // This function updates the state variable for width and updates the corrospondent DB entry
+  const resizeWidth = async (width: string) => {
+    const nodeProperty: INodeProperty = makeINodeProperty('width', width)
+    const contentUpdateResp = await FrontendNodeGateway.updateNode(currentNode.nodeId, [
+      nodeProperty,
+    ])
+    if (!contentUpdateResp.success) {
+      setAlertIsOpen(true)
+      setAlertTitle('Image width update failed')
+      setAlertMessage(contentUpdateResp.message)
+    }
+    setImageResizedWidth(width)
+  }
+
   return (
     <div className="imageWrapper">
+      <button
+        className="resetButton"
+        onClick={() => {
+          resetResize()
+        }}
+        style={{ width: 300 }}
+      >
+        Reset
+      </button>
+      Height
+      <NumberInput
+        onChange={(valueString) => resizeHeight(valueString)}
+        value={imageResizedHeight}
+        style={{ width: 300 }}
+      >
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+      Width
+      <NumberInput
+        onChange={(valueString) => resizeWidth(valueString)}
+        value={imageResizedWidth}
+        style={{ width: 300 }}
+      >
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
       <div
         ref={imageContainer}
         onPointerDown={onPointerDown}
@@ -408,7 +548,7 @@ export const ImageContent = () => {
             </div>
           </div>
         }
-        <img src={content} />
+        {generateImage(content, Number(imageResizedHeight), Number(imageResizedWidth))}
       </div>
     </div>
   )

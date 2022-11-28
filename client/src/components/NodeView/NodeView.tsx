@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FrontendAnchorGateway } from '../../anchors'
 import { generateObjectId } from '../../global'
-import { IAnchor, INode, isSameExtent, NodeIdsToNodesMap } from '../../types'
+import { IAnchor, ILink, INode, isSameExtent, NodeIdsToNodesMap } from '../../types'
 import { NodeBreadcrumb } from './NodeBreadcrumb'
 import { NodeContent } from './NodeContent'
 import { NodeHeader } from './NodeHeader'
-import { NodeLinkMenu } from './NodeLinkMenu'
+import { includesAnchorId, loadAnchorToLinksMap, NodeLinkMenu } from './NodeLinkMenu'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   isLinkingState,
@@ -21,6 +21,7 @@ import {
   refreshLinkListState,
 } from '../../global/Atoms'
 import './NodeView.scss'
+import { ShowLinkGraphModal } from '../Modals/ShowLinkGraphModal'
 
 export interface INodeViewProps {
   currentNode: INode
@@ -60,6 +61,7 @@ export const NodeView = (props: INodeViewProps) => {
   const setAlertIsOpen = useSetRecoilState(alertOpenState)
   const setAlertTitle = useSetRecoilState(alertTitleState)
   const setAlertMessage = useSetRecoilState(alertMessageState)
+  const [isLinkGraphOpen, setIsLinkGraphOpen] = useState(false)
   const [currNode, setCurrentNode] = useRecoilState(currentNodeState)
   const {
     filePath: { path },
@@ -68,6 +70,118 @@ export const NodeView = (props: INodeViewProps) => {
   useEffect(() => {
     setCurrentNode(currentNode)
   })
+
+  // const currentNode = useRecoilValue(currentNodeState)
+  const linkMenuRefresh = useRecoilValue(refreshLinkListState)
+  const selectedAnchors = useRecoilValue(selectedAnchorsState)
+  const [anchorsMap, setAnchorsMap] = useState<{
+    [anchorId: string]: {
+      anchor: IAnchor
+      links: { link: ILink; oppNode: INode; oppAnchor: IAnchor }[]
+    }
+  }>({})
+
+  const [nodes, setNodes] = useState([] as any)
+  const [edges, setEdges] = useState([] as any)
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      setAnchorsMap(await loadAnchorToLinksMap({ ...props, currentNode }))
+    }
+    fetchLinks()
+  }, [currentNode, linkMenuRefresh, selectedAnchors])
+
+  useEffect(() => {
+    loadMenu()
+  }, [anchorsMap])
+
+  const initialNodes = [
+    {
+      id: '0',
+      // you can also pass a React component as a label
+      data: { label: currentNode.title },
+      position: { x: 100, y: 0 },
+    },
+  ]
+
+  type Edge = {
+    id: string
+    source: string
+    target: string
+    animated: boolean
+  }
+  const initialEdges = [] as Edge[]
+
+  const loadMenu = () => {
+    const uniqueNames = new Set<string>()
+    uniqueNames.add(currentNode.nodeId)
+
+    const fromNode = []
+    const toNode = []
+
+    if (anchorsMap) {
+      for (const anchorId in anchorsMap) {
+        if (Object.prototype.hasOwnProperty.call(anchorsMap, anchorId)) {
+          const anchorLinks = anchorsMap[anchorId].links
+          for (let i = 0; i < anchorLinks.length; i++) {
+            if (uniqueNames.has(anchorLinks[i].oppNode.nodeId)) {
+              continue
+            } else {
+              uniqueNames.add(anchorLinks[i].oppNode.nodeId)
+            }
+            if (
+              anchorLinks[i].link.anchor1NodeId == currNode.nodeId &&
+              anchorLinks[i].link.anchor2NodeId != currNode.nodeId
+            ) {
+              toNode.push(nodeIdsToNodesMap[anchorLinks[i].link.anchor2NodeId].title)
+            } else if (
+              anchorLinks[i].link.anchor2NodeId == currNode.nodeId &&
+              anchorLinks[i].link.anchor1NodeId != currNode.nodeId
+            ) {
+              fromNode.push(nodeIdsToNodesMap[anchorLinks[i].link.anchor1NodeId].title)
+            }
+          }
+        }
+      }
+    }
+
+    let i = 1
+    for (let j = 0; j < fromNode.length; j++) {
+      initialNodes.push({
+        id: String(i),
+        data: { label: fromNode[j] },
+        position: { x: i % 2 != 0 ? 0 : 200, y: 50 * i },
+      })
+      initialEdges.push({
+        id: '0-' + String(i),
+        source: String(i),
+        target: '0',
+        animated: false,
+      })
+      i = i + 1
+    }
+
+    initialNodes[0].position.y = 50 * i + 50
+    i = i + 3
+
+    for (let j = 0; j < toNode.length; j++) {
+      initialNodes.push({
+        id: String(i),
+        data: { label: toNode[j] },
+        position: { x: i % 2 != 0 ? 0 : 200, y: 50 * i },
+      })
+      initialEdges.push({
+        id: '0-' + String(i),
+        source: '0',
+        target: String(i),
+        animated: true,
+      })
+      i = i + 1
+    }
+
+    setNodes(initialNodes)
+    setEdges(initialEdges)
+  }
 
   const loadAnchorsFromNodeId = useCallback(async () => {
     const anchorsFromNode = await FrontendAnchorGateway.getAnchorsByNodeId(
@@ -183,6 +297,10 @@ export const NodeView = (props: INodeViewProps) => {
     document.removeEventListener('pointerup', onPointerUp)
   }
 
+  const handleShowLinkGraph = () => {
+    setIsLinkGraphOpen(!isLinkGraphOpen)
+  }
+
   return (
     <div className="node">
       <div className="nodeView" style={{ width: nodeViewWidth }}>
@@ -191,6 +309,7 @@ export const NodeView = (props: INodeViewProps) => {
           onDeleteButtonClick={onDeleteButtonClick}
           onHandleStartLinkClick={handleStartLinkClick}
           onHandleCompleteLinkClick={handleCompleteLinkClick}
+          onClickShowLinkGraph={handleShowLinkGraph}
         />
         <div className="nodeView-scrollable">
           {hasBreadcrumb && (
@@ -218,6 +337,14 @@ export const NodeView = (props: INodeViewProps) => {
           <NodeLinkMenu nodeIdsToNodesMap={nodeIdsToNodesMap} />
         </div>
       )}
+      <ShowLinkGraphModal
+        isOpen={isLinkGraphOpen}
+        onClose={() => {
+          setIsLinkGraphOpen(false)
+        }}
+        nodes={nodes}
+        edges={edges}
+      />
     </div>
   )
 }

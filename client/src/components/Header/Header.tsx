@@ -13,10 +13,12 @@ interface IHeaderProps {
   nodeIdsToNodesMap: NodeIdsToNodesMap
   onCreateNodeButtonClick: () => void
   onHomeClick: () => void
+  onClickSearchButton: () => void
 }
 
 export const Header = (props: IHeaderProps) => {
-  const { onCreateNodeButtonClick, onHomeClick, nodeIdsToNodesMap } = props
+  const { onCreateNodeButtonClick, onHomeClick, nodeIdsToNodesMap, onClickSearchButton } =
+    props
   const customButtonStyle = { height: 30, marginLeft: 10, width: 30 }
   const [isLinking, setIsLinking] = useRecoilState(isLinkingState)
   const [startAnchor, setStartAnchor] = useRecoilState(startAnchorState)
@@ -49,6 +51,11 @@ export const Header = (props: IHeaderProps) => {
           style={customButtonStyle}
           icon={<ai.AiOutlinePlus />}
           onClick={onCreateNodeButtonClick}
+        />
+        <Button
+          style={customButtonStyle}
+          icon={<ai.AiOutlineSearch />}
+          onClick={onClickSearchButton}
         />
       </div>
       {isLinking && startAnchor && (

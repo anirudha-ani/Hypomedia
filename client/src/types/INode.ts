@@ -14,6 +14,8 @@ export interface INode {
   nodeId: string // unique randomly generated ID which contains the type as a prefix
   title: string // user create node title
   dateCreated?: Date // date that the node was created
+  height: string
+  width: string
 }
 
 /**
@@ -54,7 +56,9 @@ export function makeINode(
   children: string[] = [],
   type: NodeType = 'text',
   title: string | null = null,
-  content: any = null
+  content: any = null,
+  height: string = '0',
+  width: string = '0'
 ): INode {
   return {
     nodeId: nodeId,
@@ -62,6 +66,8 @@ export function makeINode(
     type: type,
     content: content ?? 'content' + nodeId,
     filePath: makeINodePath(path, children),
+    height: height,
+    width: width,
   }
 }
 
@@ -81,5 +87,7 @@ export function makeIFolderNode(
     title: title ?? 'node' + nodeId,
     type: type ?? 'text',
     viewType: viewType ?? 'grid',
+    height: '0',
+    width: '0',
   }
 }

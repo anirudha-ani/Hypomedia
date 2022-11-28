@@ -96,6 +96,8 @@ export async function createNodeFromModal({
         title: title,
         type: type,
         viewType: 'grid',
+        height: '0',
+        width: '0',
       }
       break
     default:
@@ -106,6 +108,8 @@ export async function createNodeFromModal({
         nodeId: nodeId,
         title: title,
         type: type,
+        height: '0',
+        width: '0',
       }
   }
 

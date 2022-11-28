@@ -36,6 +36,18 @@ export const FrontendNodeGateway = {
       return failureServiceResponse('[createNode] Unable to access backend')
     }
   },
+  searchNode: async (searchTerm: string): Promise<IServiceResponse<INode[]>> => {
+    try {
+      return await post<IServiceResponse<INode[]>>(
+        baseEndpoint + servicePath + 'search',
+        {
+          searchTerm: searchTerm,
+        }
+      )
+    } catch (exception) {
+      return failureServiceResponse('[createNode] Unable to access backend')
+    }
+  },
 
   /**
    * This is method is that is called whenever a node is deleted
