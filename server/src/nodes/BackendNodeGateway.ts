@@ -100,6 +100,16 @@ export class BackendNodeGateway {
   }
 
   /**
+   * Method to retrieve nodes with a given nodeIds.
+   *
+   * @param searchTerm - The nodeIds of the nodes to be retrieved.
+   * @returns IServiceResponse<INode[]>
+   */
+  async getNodesBySearchTerm(searchTerm: string): Promise<IServiceResponse<INode[]>> {
+    return this.nodeCollectionConnection.searchNodes(searchTerm)
+  }
+
+  /**
    * Method to delete all nodes in the database.
    *
    * @returns IServiceResponse<{}>

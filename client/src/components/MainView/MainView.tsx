@@ -22,12 +22,14 @@ import { NodeView } from '../NodeView'
 import { TreeView } from '../TreeView'
 import './MainView.scss'
 import { createNodeIdsToNodesMap, emptyNode, makeRootWrapper } from './mainViewUtils'
+import { SearchModal } from '../Modals/SearchModal'
 
 export const MainView = React.memo(function MainView() {
   // app states
   const [isAppLoaded, setIsAppLoaded] = useState(false)
   // modal states
   const [createNodeModalOpen, setCreateNodeModalOpen] = useState(false)
+  const [isSearchModalOpen, setSearchModalOpen] = useState(false)
   const [completeLinkModalOpen, setCompleteLinkModalOpen] = useState(false)
   const [moveNodeModalOpen, setMoveNodeModalOpen] = useState(false)
   // node states
@@ -127,6 +129,10 @@ export const MainView = React.memo(function MainView() {
     [loadRootsFromDB]
   )
 
+  const handleSearchButtonClick = useCallback(() => {
+    setSearchModalOpen(true)
+  }, [setCreateNodeModalOpen])
+
   const handleMoveNodeButtonClick = useCallback(() => {
     setMoveNodeModalOpen(true)
   }, [])
@@ -196,6 +202,7 @@ export const MainView = React.memo(function MainView() {
           <Header
             onHomeClick={handleHomeClick}
             onCreateNodeButtonClick={handleCreateNodeButtonClick}
+            onClickSearchButton={handleSearchButtonClick}
             nodeIdsToNodesMap={nodeIdsToNodesMap}
           />
           <CreateNodeModal
@@ -204,6 +211,10 @@ export const MainView = React.memo(function MainView() {
             roots={rootNodes}
             nodeIdsToNodesMap={nodeIdsToNodesMap}
             onSubmit={loadRootsFromDB}
+          />
+          <SearchModal
+            isOpen={isSearchModalOpen}
+            onClose={() => setSearchModalOpen(false)}
           />
           <CompleteLinkModal
             isOpen={completeLinkModalOpen}

@@ -83,6 +83,23 @@ export class NodeRouter {
     })
 
     /**
+     * Request to retrieve nodes by searchTerm
+     *
+     * @param req request object coming from client
+     * @param res response object to send to client
+     */
+    NodeExpressRouter.post('/search', async (req: Request, res: Response) => {
+      try {
+        const searchTerm = req.body.searchTerm
+        const response: IServiceResponse<INode[]> =
+          await this.BackendNodeGateway.getNodesBySearchTerm(searchTerm)
+        res.status(200).send(response)
+      } catch (e) {
+        res.status(500).send(e.message)
+      }
+    })
+
+    /**
      * Request to update the node with the given nodeId
      *
      * @param req request object coming from client

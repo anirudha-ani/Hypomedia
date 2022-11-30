@@ -9,7 +9,7 @@
   .imageContainer {
     overflow: visible;
     position: relative;
-    height: 300px;
+    // height: 300px;
     object-fit: cover;
 
     .image {
@@ -63,10 +63,43 @@
 
       img {
         padding: 0;
-        height: 300px;
+        // height: 300px;
         object-fit: cover;
         object-position: 0 0;
       }
     }
+  }
+}
+
+.resetButton {
+  font-size: 15px;
+  user-select: none;
+  margin-right: 5px;
+  border-color: black;
+  // Font options
+  font-family: $header-font;
+
+  // Color
+  padding: 3px 15px;
+  border-radius: 5px;
+  // gap: 5px;
+  transition: 0.3s;
+  cursor: pointer;
+  // margin: 1000;
+  background-color: $secondary-background-color;
+
+  &:hover {
+    background-color: darken($secondary-background-color, 30);
+  }
+
+  &.active {
+    background-color: $selected-color;
+    &:hover {
+      background-color: darken($selected-color, 20);
+    }
+  }
+
+  .icon {
+    font-size: 17px;
   }
 }

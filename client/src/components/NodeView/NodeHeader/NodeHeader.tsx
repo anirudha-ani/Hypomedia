@@ -25,6 +25,7 @@ interface INodeHeaderProps {
   onHandleStartLinkClick: () => void
   onDeleteButtonClick: (node: INode) => void
   onMoveButtonClick: (node: INode) => void
+  onClickShowLinkGraph: () => void
 }
 
 export const NodeHeader = (props: INodeHeaderProps) => {
@@ -33,6 +34,7 @@ export const NodeHeader = (props: INodeHeaderProps) => {
     onMoveButtonClick,
     onHandleStartLinkClick,
     onHandleCompleteLinkClick,
+    onClickShowLinkGraph,
   } = props
   const currentNode = useRecoilValue(currentNodeState)
   const [refresh, setRefresh] = useRecoilState(refreshState)
@@ -69,11 +71,38 @@ export const NodeHeader = (props: INodeHeaderProps) => {
   /* Method to update the node title */
   const handleUpdateTitle = async (title: string) => {
     // TODO: Task 8
+    setTitle(title)
+    const nodeProperty: INodeProperty = makeINodeProperty('title', title)
+    const titleUpdateResp = await FrontendNodeGateway.updateNode(currentNode.nodeId, [
+      nodeProperty,
+    ])
+    if (!titleUpdateResp.success) {
+      setAlertIsOpen(true)
+      setAlertTitle('Title update failed')
+      setAlertMessage(titleUpdateResp.message)
+    }
+    setRefresh(!refresh)
+    setRefreshLinkList(!refreshLinkList)
   }
 
   /* Method called on title right click */
   const handleTitleRightClick = () => {
     // TODO: Task 9 - context menu
+    ContextMenuItems.splice(0, ContextMenuItems.length)
+    const menuItem: JSX.Element = (
+      <div
+        key={'titleRename'}
+        className="contextMenuItem"
+        onClick={(e) => {
+          ContextMenuItems.splice(0, ContextMenuItems.length)
+          setEditingTitle(true)
+        }}
+      >
+        <div className="itemTitle">Rename</div>
+        <div className="itemShortcut">cmmd + shift + R</div>
+      </div>
+    )
+    ContextMenuItems.push(menuItem)
   }
 
   /* useEffect which updates the title and editing state when the node is changed */
@@ -85,11 +114,36 @@ export const NodeHeader = (props: INodeHeaderProps) => {
   /* Node key handlers*/
   const nodeKeyHandlers = (e: KeyboardEvent) => {
     // TODO: Task 9 - keyboard shortcuts
+    switch (e.key) {
+      case 'Enter':
+        if (editingTitle == true) {
+          e.preventDefault()
+          setEditingTitle(false)
+        }
+        break
+      case 'Escape':
+        if (editingTitle == true) {
+          e.preventDefault()
+          setEditingTitle(false)
+        }
+        break
+    }
+
+    // ctrl + shift key events
+    if (e.shiftKey && e.ctrlKey) {
+      switch (e.key) {
+        case 'R':
+          e.preventDefault()
+          setEditingTitle(true)
+          break
+      }
+    }
   }
 
   // Trigger on node load or when editingTitle changes
   useEffect(() => {
     // TODO: Task 9 - keyboard shortcuts
+    document.addEventListener('keydown', nodeKeyHandlers)
   }, [editingTitle])
 
   const folder: boolean = currentNode.type === 'folder'
@@ -102,6 +156,7 @@ export const NodeHeader = (props: INodeHeaderProps) => {
           editing={editingTitle}
           setEditing={setEditingTitle}
           onEdit={handleUpdateTitle}
+          onContextMenu={handleTitleRightClick}
         />
       </div>
       <div className="nodeHeader-buttonBar">
@@ -129,6 +184,11 @@ export const NodeHeader = (props: INodeHeaderProps) => {
                 onClick={onHandleCompleteLinkClick}
               />
             )}
+            <Button
+              icon={<ri.RiGitBranchFill />}
+              text="Show Link Graph"
+              onClick={onClickShowLinkGraph}
+            />
             {folder && (
               <div className="select">
                 <Select
