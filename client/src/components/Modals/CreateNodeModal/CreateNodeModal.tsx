@@ -115,12 +115,16 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
     case 'image':
       contentInputPlaceholder = 'Image URL...'
       break
+    case 'audio':
+      contentInputPlaceholder = 'Audio URL...'
+      break
     default:
       contentInputPlaceholder = 'Content...'
   }
 
   const isImage: boolean = selectedType === 'image'
   const isText: boolean = selectedType === 'text'
+  const isAudio: boolean = selectedType === 'audio'
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -163,6 +167,24 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
               </div>
             )}
             {selectedType && isImage && (
+              <div className="modal-input">
+                <input
+                  type="file"
+                  onChange={handleImageUpload}
+                  placeholder={contentInputPlaceholder}
+                />
+              </div>
+            )}
+            {selectedType && isAudio && (
+              <div className="modal-input">
+                <Input
+                  value={content}
+                  onChange={handleImageContentChange}
+                  placeholder={contentInputPlaceholder}
+                />
+              </div>
+            )}
+            {selectedType && isAudio && (
               <div className="modal-input">
                 <input
                   type="file"

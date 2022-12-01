@@ -6,6 +6,7 @@ import {
   RiVideoLine,
   RiFilePdfLine,
   RiQuestionLine,
+  RiMusicFill,
 } from 'react-icons/ri'
 import uniqid from 'uniqid'
 import { NodeType } from '../types'
@@ -21,6 +22,8 @@ export const nodeTypeIcon = (type: NodeType): JSX.Element => {
       return <RiFolderLine />
     case 'image':
       return <RiImageLine />
+    case 'audio':
+      return <RiMusicFill />
     case 'pdf':
       return <RiFilePdfLine />
     default:

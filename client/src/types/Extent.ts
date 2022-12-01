@@ -2,7 +2,7 @@
  * Defines the extent of an anchor in a document,
  * e.g. start / end characters in a text node.
  */
-export type Extent = ITextExtent | IImageExtent
+export type Extent = ITextExtent | IImageExtent | IMediaExtent
 
 /** Defines the extent of an anchor on a text node */
 export interface ITextExtent {
@@ -21,6 +21,11 @@ export interface IImageExtent {
   width: number
 }
 
+export interface IMediaExtent {
+  type: 'audio'
+  timeStamp: number
+}
+
 export function makeITextExtent(
   text: string,
   startCharacter: number,
@@ -31,6 +36,13 @@ export function makeITextExtent(
     startCharacter: startCharacter,
     text: text,
     type: 'text' as 'text',
+  }
+}
+
+export function makeIMediaExtent(time: number) {
+  return {
+    timeStamp: time,
+    type: 'audio' as 'audio',
   }
 }
 
@@ -50,7 +62,12 @@ export function makeIImageExtent(
 }
 
 export function isExtent(object: any): boolean {
-  return object === null || isITextExtent(object) || isIImageExtent(object)
+  return (
+    object === null ||
+    isITextExtent(object) ||
+    isIImageExtent(object) ||
+    isIMediaExtent(object)
+  )
 }
 
 export function isITextExtent(object: any): boolean {
@@ -82,6 +99,13 @@ export function isIImageExtent(object: any): boolean {
     typeof (object as IImageExtent).top === 'number' &&
     typeof (object as IImageExtent).width === 'number' &&
     typeof (object as IImageExtent).height === 'number'
+  )
+}
+
+export function isIMediaExtent(object: any): boolean {
+  return (
+    (object as IMediaExtent).type === 'audio' &&
+    typeof (object as IMediaExtent).timeStamp === 'number'
   )
 }
 
