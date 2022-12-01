@@ -26,6 +26,7 @@ interface INodeHeaderProps {
   onDeleteButtonClick: (node: INode) => void
   onMoveButtonClick: (node: INode) => void
   onClickShowLinkGraph: () => void
+  onClickRecordAudio: () => void
 }
 
 export const NodeHeader = (props: INodeHeaderProps) => {
@@ -35,6 +36,7 @@ export const NodeHeader = (props: INodeHeaderProps) => {
     onHandleStartLinkClick,
     onHandleCompleteLinkClick,
     onClickShowLinkGraph,
+    onClickRecordAudio,
   } = props
   const currentNode = useRecoilValue(currentNodeState)
   const [refresh, setRefresh] = useRecoilState(refreshState)
@@ -188,6 +190,11 @@ export const NodeHeader = (props: INodeHeaderProps) => {
               icon={<ri.RiGitBranchFill />}
               text="Show Link Graph"
               onClick={onClickShowLinkGraph}
+            />
+            <Button
+              icon={<ri.RiMicLine />}
+              text="Record Audio"
+              onClick={onClickRecordAudio}
             />
             {folder && (
               <div className="select">
