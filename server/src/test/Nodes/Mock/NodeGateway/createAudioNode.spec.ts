@@ -37,7 +37,7 @@ describe('Unit Test: Create Node', () => {
     expect(response.payload).toStrictEqual(validNode)
   })
 
-  test('fails to insert node with duplicate id', async () => {
+  test('fails to insert audio node with duplicate id', async () => {
     const validNode: INode = makeINode('1', ['1'], undefined, 'audio')
     const validResponse = await backendNodeGateway.createNode(validNode)
 
@@ -47,25 +47,25 @@ describe('Unit Test: Create Node', () => {
     expect(invalidResponse.success).toBeFalsy()
   })
 
-  test('fails to insert node when children is of invalid type', async () => {
+  test('fails to insert audio node when children is of invalid type', async () => {
     const invalidNode: INode = makeINode('1', ['2'], '')
     const response = await backendNodeGateway.createNode(invalidNode)
     expect(response.success).toBeFalsy()
   })
 
-  test('fails to insert node when title is of invalid type', async () => {
+  test('fails to insert audio node when title is of invalid type', async () => {
     const invalidNode = makeINode('1', ['2'], undefined, 'audio', 1)
     const response = await backendNodeGateway.createNode(invalidNode)
     expect(response.success).toBeFalsy()
   })
 
-  test('fails to insert node when content is not valid typed', async () => {
+  test('fails to insert audio node when content is not valid typed', async () => {
     const invalidNode = makeINode('1', ['2'], undefined, 'audio', undefined, 0)
     const response = await backendNodeGateway.createNode(invalidNode)
     expect(response.success).toBeFalsy()
   })
 
-  test('fails to insert node when fieldName is missing', async () => {
+  test('fails to insert audio node when fieldName is missing', async () => {
     const invalidNode = {
       title: 'invalidNode',
       nodeId: '1',
@@ -76,7 +76,7 @@ describe('Unit Test: Create Node', () => {
     expect(response.success).toBeFalsy()
   })
 
-  test('fails to insert node when fieldName is misnamed', async () => {
+  test('fails to insert audio node when fieldName is misnamed', async () => {
     const invalidNode = {
       title: 'invalidNode',
       nodeId: '1',
@@ -88,7 +88,7 @@ describe('Unit Test: Create Node', () => {
     expect(response.success).toBeFalsy()
   })
 
-  test('fails to insert node when field value is mistyped', async () => {
+  test('fails to insert audio node when field value is mistyped', async () => {
     const invalidNode = {
       title: 'invalidNode',
       nodeId: '1',
