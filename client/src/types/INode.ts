@@ -1,7 +1,7 @@
 import { INodePath, makeINodePath } from './INodePath'
 
 // nodeTypes returns a string array of the types available
-export const nodeTypes: string[] = ['text', 'image', 'folder', 'video', 'audio', 'geo']
+export const nodeTypes: string[] = ['text', 'image', 'folder', 'audio']
 
 // Supported nodeTypes for file browser
 export type NodeType = 'text' | 'image' | 'folder' | 'pdf' | 'audio' | 'video' | 'geo'
