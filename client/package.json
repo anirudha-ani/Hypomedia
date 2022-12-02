@@ -18,6 +18,7 @@
     "@chakra-ui/react": "^1.6.7",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@react-google-maps/api": "^2.17.0",
     "@testing-library/dom": "^7.21.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -42,6 +43,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-flow-renderer": "^10.3.17",
+    "react-geolocated": "^4.0.3",
     "react-icons": "^4.2.0",
     "react-media-recorder": "^1.6.6",
     "react-player": "^2.11.0",
@@ -73,6 +75,10 @@
       "react-app",
       "react-app/jest"
     ]
+  },
+  "resolutions": {
+    "@types/react": "17.0.2",
+    "@types/react-dom": "17.0.2"
   },
   "browserslist": {
     "production": [

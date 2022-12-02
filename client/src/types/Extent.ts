@@ -26,6 +26,12 @@ export interface IMediaExtent {
   timeStamp: number
 }
 
+export interface IGeoExtent {
+  type: 'geo'
+  lat: number
+  lng: number
+}
+
 export function makeITextExtent(
   text: string,
   startCharacter: number,
@@ -43,6 +49,14 @@ export function makeIMediaExtent(time: number) {
   return {
     timeStamp: time,
     type: 'audio' as 'audio',
+  }
+}
+
+export function makeIGeoExtent(lat: number, lng: number) {
+  return {
+    lat: lat,
+    lng: lng,
+    type: 'geo' as 'geo',
   }
 }
 
@@ -66,7 +80,8 @@ export function isExtent(object: any): boolean {
     object === null ||
     isITextExtent(object) ||
     isIImageExtent(object) ||
-    isIMediaExtent(object)
+    isIMediaExtent(object) ||
+    isIGeoExtent(object)
   )
 }
 
@@ -106,6 +121,14 @@ export function isIMediaExtent(object: any): boolean {
   return (
     (object as IMediaExtent).type === 'audio' &&
     typeof (object as IMediaExtent).timeStamp === 'number'
+  )
+}
+
+export function isIGeoExtent(object: any): boolean {
+  return (
+    (object as IGeoExtent).type === 'geo' &&
+    typeof (object as IGeoExtent).lat === 'number' &&
+    typeof (object as IGeoExtent).lng === 'number'
   )
 }
 

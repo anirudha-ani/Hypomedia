@@ -1,10 +1,10 @@
 import { INodePath, makeINodePath } from './INodePath'
 
 // nodeTypes returns a string array of the types available
-export const nodeTypes: string[] = ['text', 'image', 'folder', 'video', 'audio']
+export const nodeTypes: string[] = ['text', 'image', 'folder', 'video', 'audio', 'geo']
 
 // Supported nodeTypes for file browser
-export type NodeType = 'text' | 'image' | 'folder' | 'pdf' | 'audio' | 'video'
+export type NodeType = 'text' | 'image' | 'folder' | 'pdf' | 'audio' | 'video' | 'geo'
 
 // INode with node metadata
 export interface INode {
@@ -16,6 +16,8 @@ export interface INode {
   dateCreated?: Date // date that the node was created
   height: string
   width: string
+  latitude: number // If applicable
+  longitude: number // if applicable
 }
 
 /**
@@ -36,6 +38,19 @@ export interface IFolderNode extends INode {
 }
 
 export type NodeFields = keyof INode | keyof IFolderNode
+
+export const allNodeFields: string[] = [
+  'nodeId',
+  'title',
+  'type',
+  'content',
+  'filePath',
+  'viewType',
+  'width',
+  'height',
+  'latitude',
+  'longitude',
+]
 
 // Type declaration for map from nodeId --> INode
 export type NodeIdsToNodesMap = { [nodeId: string]: INode }
@@ -58,7 +73,9 @@ export function makeINode(
   title: string | null = null,
   content: any = null,
   height: string = '0',
-  width: string = '0'
+  width: string = '0',
+  latitude?: number,
+  longitude?: number
 ): INode {
   return {
     nodeId: nodeId,
@@ -68,6 +85,8 @@ export function makeINode(
     filePath: makeINodePath(path, children),
     height: height,
     width: width,
+    latitude: latitude ?? 0,
+    longitude: longitude ?? 0,
   }
 }
 
@@ -89,5 +108,7 @@ export function makeIFolderNode(
     viewType: viewType ?? 'grid',
     height: '0',
     width: '0',
+    latitude: 0,
+    longitude: 0,
   }
 }

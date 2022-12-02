@@ -7,10 +7,17 @@ import {
   RiFilePdfLine,
   RiQuestionLine,
   RiMusicFill,
+  RiMap2Fill,
+  RiMapFill,
+  RiUserLocationFill,
 } from 'react-icons/ri'
+import { FaLocationArrow } from 'react-icons/fa'
+import { MdLocationOn } from 'react-icons/md'
 import uniqid from 'uniqid'
 import { NodeType } from '../types'
 import { INodePath } from '../types'
+
+export const apiKey = 'AIzaSyAkQwN0JqckFsxoReJp6tQihWnv6Wj7Qu8'
 
 export const nodeTypeIcon = (type: NodeType): JSX.Element => {
   switch (type) {
@@ -24,6 +31,8 @@ export const nodeTypeIcon = (type: NodeType): JSX.Element => {
       return <RiImageLine />
     case 'audio':
       return <RiMusicFill />
+    case 'geo':
+      return <MdLocationOn />
     case 'pdf':
       return <RiFilePdfLine />
     default:

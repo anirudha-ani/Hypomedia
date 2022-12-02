@@ -19,11 +19,15 @@ import {
   RecursiveNodeTree,
 } from '../../../types'
 import { Button } from '../../Button'
+import { apiKey } from '../../../global/globalUtils'
 import { TreeView } from '../../TreeView'
 import './CreateNodeModal.scss'
 import { createNodeFromModal, uploadImage } from './createNodeUtils'
 import { useSetRecoilState } from 'recoil'
 import { selectedNodeState } from '../../../global/Atoms'
+import { useGeolocated } from 'react-geolocated'
+import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api'
+import { FrontendNodeGateway } from '../../../nodes'
 
 export interface ICreateNodeModalProps {
   isOpen: boolean
@@ -41,12 +45,28 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
   // deconstruct props variables
   const { isOpen, onClose, roots, nodeIdsToNodesMap, onSubmit } = props
 
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 5000,
+  })
+
+  // const isLoaded = useLoadScript({
+  //   googleMapsApiKey: apiKey,
+  // })
+
   // state variables
   const setSelectedNode = useSetRecoilState(selectedNodeState)
   const [selectedParentNode, setSelectedParentNode] = useState<INode | null>(null)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [latitude, setLatitude] = useState(0)
+  const [longitude, setLongitude] = useState(0)
   const [selectedType, setSelectedType] = useState<NodeType>('' as NodeType)
+  const [curNode, setCurNode] = useState<INode | null>()
+  const [lat, setLat] = useState(0)
+  const [lng, setLng] = useState(0)
   const [error, setError] = useState<string>('')
 
   // event handlers for the modal inputs and dropdown selects
@@ -77,14 +97,37 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
       setError('Error: No title')
       return
     }
+
+    while (coords?.latitude == 0 && coords?.longitude == 0) {
+      setCurNode(null)
+    }
+
     const attributes = {
       content,
+      latitude,
+      longitude,
       nodeIdsToNodesMap,
       parentNodeId: selectedParentNode ? selectedParentNode.nodeId : null,
       title,
       type: selectedType as NodeType,
     }
     const node = await createNodeFromModal(attributes)
+    const geoAttributes = {
+      content,
+      latitude: coords ? coords?.latitude : 0,
+      longitude: coords ? coords?.longitude : 0,
+      nodeIdsToNodesMap,
+      parentNodeId: node ? node.nodeId : null,
+      title: 'Geolocation - ' + node?.title,
+      type: 'geo' as NodeType,
+    }
+    const geoNode = await createNodeFromModal(geoAttributes)
+    if (geoNode && node) {
+      await FrontendNodeGateway.moveNode({
+        newParentId: node.nodeId,
+        nodeId: geoNode.nodeId,
+      })
+    }
     node && setSelectedNode(node)
     onSubmit()
     handleClose()
@@ -98,6 +141,8 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
     setSelectedType('' as NodeType)
     setContent('')
     setError('')
+    setLat(0)
+    setLng(0)
   }
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {

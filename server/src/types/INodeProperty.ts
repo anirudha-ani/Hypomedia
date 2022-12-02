@@ -33,6 +33,10 @@ export function isINodeProperty(object: any): boolean {
         return typeof (object as INodeProperty).value === 'string'
       case 'width':
         return typeof (object as INodeProperty).value === 'string'
+      case 'latitude':
+        return typeof (object as INodeProperty).value === 'number'
+      case 'longitude':
+        return typeof (object as INodeProperty).value === 'number'
       default:
         return true
     }
