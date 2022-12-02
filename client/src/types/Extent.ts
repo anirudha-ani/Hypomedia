@@ -96,7 +96,7 @@ export function isITextExtent(object: any): boolean {
     typeof endCharacter === 'number'
   if (correctTypes) {
     // check that start and end character numbers are correct
-    if (startCharacter < endCharacter) {
+    if (startCharacter > endCharacter) {
       return false
     }
     // check that start and end character numbers match with text length
