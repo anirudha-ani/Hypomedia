@@ -19,6 +19,15 @@ import { INodePath } from '../types'
 
 export const apiKey = 'AIzaSyAkQwN0JqckFsxoReJp6tQihWnv6Wj7Qu8'
 
+export const firebaseConfig = {
+  apiKey: 'AIzaSyDLqrVHOxdS3lfkXrsEcC9r6vi-_8jrAnY',
+  authDomain: 'audio-upload-882ba.firebaseapp.com',
+  projectId: 'audio-upload-882ba',
+  storageBucket: 'audio-upload-882ba.appspot.com',
+  messagingSenderId: '1087223453810',
+  appId: '1:1087223453810:web:f07529c96cbe0ffe220aeb',
+}
+
 export const nodeTypeIcon = (type: NodeType): JSX.Element => {
   switch (type) {
     case 'text':

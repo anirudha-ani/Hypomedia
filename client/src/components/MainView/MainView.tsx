@@ -18,6 +18,7 @@ import { ContextMenu } from '../ContextMenu/ContextMenu'
 import { Header } from '../Header'
 import { LoadingScreen } from '../LoadingScreen'
 import { CompleteLinkModal, CreateNodeModal, MoveNodeModal } from '../Modals'
+import { RecordAudioModal } from '../Modals/RecordAudioModal'
 import { NodeView } from '../NodeView'
 import { TreeView } from '../TreeView'
 import './MainView.scss'
@@ -252,6 +253,7 @@ export const MainView = React.memo(function MainView() {
                 onCompleteLinkClick={handleCompleteLinkClick}
                 onCreateNodeButtonClick={handleCreateNodeButtonClick}
                 nodeIdsToNodesMap={nodeIdsToNodesMap}
+                onSubmit={loadRootsFromDB}
               />
             </div>
           </div>

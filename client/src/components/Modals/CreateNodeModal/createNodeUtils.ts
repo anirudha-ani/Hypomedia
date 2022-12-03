@@ -135,7 +135,6 @@ export async function createNodeFromModal({
         longitude: 0,
       }
   }
-
   const nodeResponse = await FrontendNodeGateway.createNode(newNode)
   if (nodeResponse.success) {
     return nodeResponse.payload

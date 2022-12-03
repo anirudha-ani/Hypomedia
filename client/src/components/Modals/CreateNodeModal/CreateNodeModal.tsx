@@ -101,6 +101,7 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
     while (coords?.latitude == 0 && coords?.longitude == 0) {
       setCurNode(null)
     }
+    console.log(coords)
 
     const attributes = {
       content,
@@ -121,6 +122,7 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
       title: 'Geolocation - ' + node?.title,
       type: 'geo' as NodeType,
     }
+    console.log(geoAttributes)
     const geoNode = await createNodeFromModal(geoAttributes)
     if (geoNode && node) {
       await FrontendNodeGateway.moveNode({

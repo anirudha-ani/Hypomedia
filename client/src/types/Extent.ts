@@ -2,7 +2,7 @@
  * Defines the extent of an anchor in a document,
  * e.g. start / end characters in a text node.
  */
-export type Extent = ITextExtent | IImageExtent | IMediaExtent
+export type Extent = ITextExtent | IImageExtent | IMediaExtent | IGeoExtent
 
 /** Defines the extent of an anchor on a text node */
 export interface ITextExtent {
