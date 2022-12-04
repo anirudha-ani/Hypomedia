@@ -99,9 +99,7 @@ export function makeIFolderNode(
   type?: any,
   title?: any,
   content?: any,
-  viewType?: any,
-  latitude?: number,
-  longitude?: number
+  viewType?: any
 ): IFolderNode {
   return {
     content: content ?? 'content' + nodeId,
