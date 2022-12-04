@@ -29,6 +29,7 @@ import './GeoContent.scss'
 interface IGeoContentProps {}
 
 /** The content of an audio/video node, including any anchors */
+// eslint-disable-next-line react/display-name
 export const GeoContent = React.memo(() => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
