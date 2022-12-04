@@ -28,6 +28,8 @@ describe('E2E Test: Node CRUD', () => {
     filePath: makeINodePath([testNodeId]),
     content: 'test.content',
     type: 'text',
+    height: '0',
+    width: '0',
   }
 
   beforeAll(async () => {
@@ -101,6 +103,8 @@ describe('E2E Test: File Structure Validity', () => {
     filePath: makeINodePath([testFolderNodeId]),
     content: 'test.content.testFolder',
     type: 'folder',
+    height: '0',
+    width: '0',
   }
 
   const testFolder2: INode = {
@@ -109,6 +113,8 @@ describe('E2E Test: File Structure Validity', () => {
     filePath: makeINodePath([testFolderNodeId, testFolder2NodeId]),
     content: 'test.content.testFolder2',
     type: 'folder',
+    height: '0',
+    width: '0',
   }
 
   const testNode: INode = {
@@ -117,6 +123,8 @@ describe('E2E Test: File Structure Validity', () => {
     filePath: makeINodePath([testFolderNodeId, testNodeId]),
     content: 'test.content.testNode',
     type: 'text',
+    height: '0',
+    width: '0',
   }
 
   const testNestedNode: INode = {
@@ -125,6 +133,8 @@ describe('E2E Test: File Structure Validity', () => {
     filePath: makeINodePath([testFolderNodeId, testFolder2NodeId, testNestedNodeId]),
     content: 'test.content.testNestedNode',
     type: 'text',
+    height: '0',
+    width: '0',
   }
 
   beforeAll(async () => {
