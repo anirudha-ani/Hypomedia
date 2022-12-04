@@ -30,6 +30,8 @@ describe('E2E Test: Node CRUD', () => {
     type: 'text',
     height: '0',
     width: '0',
+    latitude: 0,
+    longitude: 0,
   }
 
   beforeAll(async () => {
@@ -105,6 +107,8 @@ describe('E2E Test: File Structure Validity', () => {
     type: 'folder',
     height: '0',
     width: '0',
+    latitude: 0,
+    longitude: 0,
   }
 
   const testFolder2: INode = {
@@ -115,6 +119,8 @@ describe('E2E Test: File Structure Validity', () => {
     type: 'folder',
     height: '0',
     width: '0',
+    latitude: 0,
+    longitude: 0,
   }
 
   const testNode: INode = {
@@ -125,6 +131,8 @@ describe('E2E Test: File Structure Validity', () => {
     type: 'text',
     height: '0',
     width: '0',
+    latitude: 0,
+    longitude: 0,
   }
 
   const testNestedNode: INode = {
@@ -135,6 +143,8 @@ describe('E2E Test: File Structure Validity', () => {
     type: 'text',
     height: '0',
     width: '0',
+    latitude: 0,
+    longitude: 0,
   }
 
   beforeAll(async () => {
