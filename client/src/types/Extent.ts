@@ -2,7 +2,7 @@
  * Defines the extent of an anchor in a document,
  * e.g. start / end characters in a text node.
  */
-export type Extent = ITextExtent | IImageExtent | IMediaExtent
+export type Extent = ITextExtent | IImageExtent | IMediaExtent | IGeoExtent
 
 /** Defines the extent of an anchor on a text node */
 export interface ITextExtent {
@@ -26,6 +26,12 @@ export interface IMediaExtent {
   timeStamp: number
 }
 
+export interface IGeoExtent {
+  type: 'geo'
+  lat: number
+  lng: number
+}
+
 export function makeITextExtent(
   text: string,
   startCharacter: number,
@@ -43,6 +49,14 @@ export function makeIMediaExtent(time: number) {
   return {
     timeStamp: time,
     type: 'audio' as 'audio',
+  }
+}
+
+export function makeIGeoExtent(lat: number, lng: number) {
+  return {
+    lat: lat,
+    lng: lng,
+    type: 'geo' as 'geo',
   }
 }
 
@@ -66,7 +80,8 @@ export function isExtent(object: any): boolean {
     object === null ||
     isITextExtent(object) ||
     isIImageExtent(object) ||
-    isIMediaExtent(object)
+    isIMediaExtent(object) ||
+    isIGeoExtent(object)
   )
 }
 
@@ -81,7 +96,7 @@ export function isITextExtent(object: any): boolean {
     typeof endCharacter === 'number'
   if (correctTypes) {
     // check that start and end character numbers are correct
-    if (startCharacter < endCharacter) {
+    if (startCharacter > endCharacter) {
       return false
     }
     // check that start and end character numbers match with text length
@@ -106,6 +121,14 @@ export function isIMediaExtent(object: any): boolean {
   return (
     (object as IMediaExtent).type === 'audio' &&
     typeof (object as IMediaExtent).timeStamp === 'number'
+  )
+}
+
+export function isIGeoExtent(object: any): boolean {
+  return (
+    (object as IGeoExtent).type === 'geo' &&
+    typeof (object as IGeoExtent).lat === 'number' &&
+    typeof (object as IGeoExtent).lng === 'number'
   )
 }
 

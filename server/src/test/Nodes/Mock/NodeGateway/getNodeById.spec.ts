@@ -39,6 +39,8 @@ describe('Unit Test: Get Node By Id', () => {
       filePath: makeINodePath(['1']),
       height: '0',
       width: '0',
+      latitude: 0,
+      longitude: 0,
     }
     const createResponse = await backendNodeGateway.createNode(validNode)
     expect(createResponse.success).toBeTruthy()
@@ -55,6 +57,8 @@ describe('Unit Test: Get Node By Id', () => {
       filePath: makeINodePath(['1']),
       height: '0',
       width: '0',
+      latitude: 0,
+      longitude: 0,
     }
     const createResponse = await backendNodeGateway.createNode(validNode)
     expect(createResponse.success).toBeTruthy()

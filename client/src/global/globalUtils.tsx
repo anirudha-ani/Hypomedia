@@ -7,10 +7,26 @@ import {
   RiFilePdfLine,
   RiQuestionLine,
   RiMusicFill,
+  RiMap2Fill,
+  RiMapFill,
+  RiUserLocationFill,
 } from 'react-icons/ri'
+import { FaLocationArrow } from 'react-icons/fa'
+import { MdLocationOn } from 'react-icons/md'
 import uniqid from 'uniqid'
 import { NodeType } from '../types'
 import { INodePath } from '../types'
+
+export const apiKey = 'AIzaSyAkQwN0JqckFsxoReJp6tQihWnv6Wj7Qu8'
+
+export const firebaseConfig = {
+  apiKey: 'AIzaSyDLqrVHOxdS3lfkXrsEcC9r6vi-_8jrAnY',
+  authDomain: 'audio-upload-882ba.firebaseapp.com',
+  projectId: 'audio-upload-882ba',
+  storageBucket: 'audio-upload-882ba.appspot.com',
+  messagingSenderId: '1087223453810',
+  appId: '1:1087223453810:web:f07529c96cbe0ffe220aeb',
+}
 
 export const nodeTypeIcon = (type: NodeType): JSX.Element => {
   switch (type) {
@@ -24,6 +40,8 @@ export const nodeTypeIcon = (type: NodeType): JSX.Element => {
       return <RiImageLine />
     case 'audio':
       return <RiMusicFill />
+    case 'geo':
+      return <MdLocationOn />
     case 'pdf':
       return <RiFilePdfLine />
     default:

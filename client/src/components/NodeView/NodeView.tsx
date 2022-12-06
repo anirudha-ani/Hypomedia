@@ -37,6 +37,7 @@ export interface INodeViewProps {
   // handler for opening move node modal
   onMoveButtonClick: (node: INode) => void
   // children used when rendering folder node
+  onSubmit: () => unknown
   childNodes?: INode[]
 }
 
@@ -50,6 +51,7 @@ export const NodeView = (props: INodeViewProps) => {
     onDeleteButtonClick,
     onMoveButtonClick,
     childNodes,
+    onSubmit,
   } = props
   const setIsLinking = useSetRecoilState(isLinkingState)
   const [startAnchor, setStartAnchor] = useRecoilState(startAnchorState)
@@ -354,9 +356,11 @@ export const NodeView = (props: INodeViewProps) => {
       />
       <RecordAudioModal
         isOpen={isRecordingAudio}
+        nodeIdsToNodesMap={nodeIdsToNodesMap}
         onClose={() => {
           setIsRecordingAudio(false)
         }}
+        onSubmit={onSubmit}
       />
     </div>
   )

@@ -17,6 +17,8 @@ export async function http<T>(request: AxiosRequestConfig): Promise<T> {
 
 export interface ICreateNodeModalAttributes {
   content: string
+  latitude: number
+  longitude: number
   nodeIdsToNodesMap: NodeIdsToNodesMap
   parentNodeId: string | null
   title: string
@@ -66,6 +68,8 @@ export const getMeta = async (imageUrl: string) => {
 /** Create a new node based on the inputted attributes in the modal */
 export async function createNodeFromModal({
   title,
+  latitude,
+  longitude,
   type,
   parentNodeId,
   content,
@@ -98,6 +102,23 @@ export async function createNodeFromModal({
         viewType: 'grid',
         height: '0',
         width: '0',
+        latitude: 0,
+        longitude: 0,
+      }
+      break
+    case 'geo':
+      newNode = {
+        content: content,
+        dateCreated: new Date(),
+        filePath: filePath,
+        nodeId: nodeId,
+        title: title,
+        type: type,
+        viewType: 'grid',
+        height: '0',
+        width: '0',
+        latitude: latitude,
+        longitude: longitude,
       }
       break
     default:
@@ -110,9 +131,10 @@ export async function createNodeFromModal({
         type: type,
         height: '0',
         width: '0',
+        latitude: 0,
+        longitude: 0,
       }
   }
-
   const nodeResponse = await FrontendNodeGateway.createNode(newNode)
   if (nodeResponse.success) {
     return nodeResponse.payload

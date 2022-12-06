@@ -7,6 +7,7 @@ import { ImageContent } from './ImageContent'
 import './NodeContent.scss'
 import { TextContent } from './TextContent'
 import { MediaContent } from './MediaContent'
+import { GeoContent } from './GeoContent'
 
 /** Props needed to render any node content */
 
@@ -31,6 +32,8 @@ export const NodeContent = (props: INodeContentProps) => {
       return <TextContent />
     case 'audio':
       return <MediaContent />
+    case 'geo':
+      return <GeoContent />
       break
     case 'folder':
       if (childNodes) {
