@@ -15,7 +15,7 @@ export const makeRootWrapper = (rootNodes: any) => {
   const rootRecursiveNodeTree: RecursiveNodeTree = {
     addChild: () => null,
     children: rootNodes,
-    node: makeIFolderNode('root', [], [], 'folder', 'MyHypermedia Dashboard', '', 'grid'),
+    node: makeIFolderNode('root', [], [], 'folder', 'User Board', '', 'grid'),
   }
   return rootRecursiveNodeTree
 }

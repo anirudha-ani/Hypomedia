@@ -25,6 +25,8 @@
   padding: 20px 20px 20px 20px;
   border-width: 1.5px;
   border-radius: 20px;
+  overflow-x: scroll;
+  overflow-y: scroll;
   border-color: $secondary-background-color;
 
   &.true {
