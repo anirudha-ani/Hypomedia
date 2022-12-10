@@ -23,6 +23,7 @@ import {
 import './NodeView.scss'
 import { ShowLinkGraphModal } from '../Modals/ShowLinkGraphModal'
 import { RecordAudioModal } from '../Modals/RecordAudioModal'
+import { ShowTimelineModal } from '../Modals/ShowTimelineModal'
 
 export interface INodeViewProps {
   currentNode: INode
@@ -65,6 +66,7 @@ export const NodeView = (props: INodeViewProps) => {
   const setAlertTitle = useSetRecoilState(alertTitleState)
   const setAlertMessage = useSetRecoilState(alertMessageState)
   const [isLinkGraphOpen, setIsLinkGraphOpen] = useState(false)
+  const [isTimelineOpen, setIsTimelineOpen] = useState(false)
   const [isRecordingAudio, setIsRecordingAudio] = useState(false)
   const [currNode, setCurrentNode] = useRecoilState(currentNodeState)
   const {
@@ -305,6 +307,10 @@ export const NodeView = (props: INodeViewProps) => {
     setIsLinkGraphOpen(!isLinkGraphOpen)
   }
 
+  const handleShowTimeline = () => {
+    setIsTimelineOpen(!isTimelineOpen)
+  }
+
   const handleRecordAudio = () => {
     setIsRecordingAudio(!isRecordingAudio)
   }
@@ -319,6 +325,7 @@ export const NodeView = (props: INodeViewProps) => {
           onHandleCompleteLinkClick={handleCompleteLinkClick}
           onClickShowLinkGraph={handleShowLinkGraph}
           onClickRecordAudio={handleRecordAudio}
+          onClickShowTimeline={handleShowTimeline}
         />
         <div className="nodeView-scrollable">
           {hasBreadcrumb && (
@@ -353,6 +360,12 @@ export const NodeView = (props: INodeViewProps) => {
         }}
         nodes={nodes}
         edges={edges}
+      />
+      <ShowTimelineModal
+        isOpen={isTimelineOpen}
+        onClose={() => {
+          setIsTimelineOpen(false)
+        }}
       />
       <RecordAudioModal
         isOpen={isRecordingAudio}
