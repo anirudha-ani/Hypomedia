@@ -27,6 +27,7 @@ interface INodeHeaderProps {
   onMoveButtonClick: (node: INode) => void
   onClickShowLinkGraph: () => void
   onClickRecordAudio: () => void
+  onClickShowTimeline: () => void
 }
 
 export const NodeHeader = (props: INodeHeaderProps) => {
@@ -37,6 +38,7 @@ export const NodeHeader = (props: INodeHeaderProps) => {
     onHandleCompleteLinkClick,
     onClickShowLinkGraph,
     onClickRecordAudio,
+    onClickShowTimeline,
   } = props
   const currentNode = useRecoilValue(currentNodeState)
   const [refresh, setRefresh] = useRecoilState(refreshState)
@@ -202,6 +204,14 @@ export const NodeHeader = (props: INodeHeaderProps) => {
               style={{ color: 'white' }}
               onClick={onClickRecordAudio}
             />
+            {folder && (
+              <Button
+                icon={<ri.RiTimeLine />}
+                text="Show Timeline"
+                style={{ color: 'white' }}
+                onClick={onClickShowTimeline}
+              />
+            )}
             {/* {folder && (
               <div className="select">
                 <Select
