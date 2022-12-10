@@ -2,6 +2,7 @@
 
 .node {
   height: calc(100vh - 50px);
+  background-color: $primary-background-color;
   display: flex;
 
   .nodeProperties {

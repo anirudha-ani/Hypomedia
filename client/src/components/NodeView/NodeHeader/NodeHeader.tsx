@@ -167,40 +167,47 @@ export const NodeHeader = (props: INodeHeaderProps) => {
             <Button
               icon={<ri.RiDeleteBin6Line />}
               text="Delete"
+              style={{ color: 'white' }}
               onClick={() => onDeleteButtonClick(currentNode)}
             />
             <Button
               icon={<ri.RiDragDropLine />}
               text="Move"
+              style={{ color: 'white' }}
               onClick={() => onMoveButtonClick(currentNode)}
             />
             <Button
               icon={<ri.RiExternalLinkLine />}
               text="Start Link"
+              style={{ color: 'white' }}
               onClick={onHandleStartLinkClick}
             />
             {isLinking && (
               <Button
                 text="Complete Link"
                 icon={<bi.BiLinkAlt />}
+                style={{ color: 'white' }}
                 onClick={onHandleCompleteLinkClick}
               />
             )}
             <Button
               icon={<ri.RiGitBranchFill />}
-              text="Show Link Graph"
+              text="Graph View"
+              style={{ color: 'white' }}
               onClick={onClickShowLinkGraph}
             />
             <Button
               icon={<ri.RiMicLine />}
-              text="Record Audio"
+              text="Record"
+              style={{ color: 'white' }}
               onClick={onClickRecordAudio}
             />
-            {folder && (
+            {/* {folder && (
               <div className="select">
                 <Select
-                  bg="f1f1f1"
+                  bg="#242935"
                   defaultValue={(currentNode as IFolderNode).viewType}
+                  style={{ color: 'white' }}
                   onChange={handleUpdateFolderView}
                   height={35}
                 >
@@ -208,7 +215,7 @@ export const NodeHeader = (props: INodeHeaderProps) => {
                   <option value="list">List</option>
                 </Select>
               </div>
-            )}
+            )} */}
           </>
         )}
       </div>
