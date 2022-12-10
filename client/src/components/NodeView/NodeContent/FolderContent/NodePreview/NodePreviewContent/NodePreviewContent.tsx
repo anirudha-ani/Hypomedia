@@ -5,6 +5,7 @@ import './NodePreviewContent.scss'
 import { TextPreviewContent } from './TextPreviewContent'
 import { AudioPreviewContent } from './AudioPreviewContent'
 import { GeoPreviewContent } from './GeoPreviewContent'
+import { FolderPreviewContent } from './FolderPreviewContent'
 
 /** Props needed to render any node content */
 export interface INodeContentPreviewProps {
@@ -23,6 +24,8 @@ export const NodePreviewContent = (props: INodeContentPreviewProps) => {
       return <GeoPreviewContent />
     case 'text':
       return <TextPreviewContent content={content} />
+    case 'folder':
+      return <FolderPreviewContent />
 
     default:
       return null

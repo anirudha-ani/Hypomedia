@@ -100,6 +100,7 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
   const handleClose = () => {
     setPercent(0)
     resetTranscript()
+    setIsRecording(false)
     onClose()
   }
 
