@@ -27,6 +27,7 @@
     "@tiptap/core": "^2.0.0-beta.199",
     "@tiptap/extension-highlight": "^2.0.0-beta.199",
     "@tiptap/extension-link": "^2.0.0-beta.199",
+    "@tiptap/extension-underline": "^2.0.0-beta.207",
     "@tiptap/react": "^2.0.0-beta.199",
     "@tiptap/starter-kit": "^2.0.0-beta.199",
     "@types/jest": "^26.0.15",

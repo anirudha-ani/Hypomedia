@@ -53,6 +53,7 @@ export const Header = (props: IHeaderProps) => {
           onClick={onCreateNodeButtonClick}
         />
         <Button
+          isWhite={isLinking}
           style={customButtonStyle}
           icon={<ai.AiOutlineSearch />}
           onClick={onClickSearchButton}

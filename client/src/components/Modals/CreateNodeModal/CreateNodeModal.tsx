@@ -45,13 +45,6 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
   // deconstruct props variables
   const { isOpen, onClose, roots, nodeIdsToNodesMap, onSubmit } = props
 
-  const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
-    positionOptions: {
-      enableHighAccuracy: false,
-    },
-    userDecisionTimeout: 5000,
-  })
-
   // const isLoaded = useLoadScript({
   //   googleMapsApiKey: apiKey,
   // })
@@ -98,11 +91,6 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
       return
     }
 
-    while (coords?.latitude == 0 && coords?.longitude == 0) {
-      setCurNode(null)
-    }
-    console.log(coords)
-
     const attributes = {
       content,
       latitude,
@@ -113,23 +101,6 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
       type: selectedType as NodeType,
     }
     const node = await createNodeFromModal(attributes)
-    const geoAttributes = {
-      content,
-      latitude: coords ? coords?.latitude : 0,
-      longitude: coords ? coords?.longitude : 0,
-      nodeIdsToNodesMap,
-      parentNodeId: node ? node.nodeId : null,
-      title: 'Geolocation - ' + node?.title,
-      type: 'geo' as NodeType,
-    }
-    console.log(geoAttributes)
-    const geoNode = await createNodeFromModal(geoAttributes)
-    if (geoNode && node) {
-      await FrontendNodeGateway.moveNode({
-        newParentId: node.nodeId,
-        nodeId: geoNode.nodeId,
-      })
-    }
     node && setSelectedNode(node)
     onSubmit()
     handleClose()
@@ -260,9 +231,8 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
             <div className="modal-footer-buttons">
               <Button
                 style={{
-                  color: 'black',
+                  color: 'white',
                   padding: 7,
-                  backgroundColor: '#B3ACFC',
                 }}
                 text="Create"
                 onClick={handleSubmit}

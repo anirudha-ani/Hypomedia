@@ -3076,6 +3076,11 @@
   resolved "https://registry.npmjs.org/@tiptap/extension-text/-/extension-text-2.0.0-beta.204.tgz"
   integrity sha512-YTUlmhdiaTRvsbxTa1VUZ2BNgsaud1OF2nSC6a3kEplREoVzJW+pbJxc1sdM5yhOW3JdXMJVTl56H30Cos4tAA==
 
+"@tiptap/extension-underline@^2.0.0-beta.207":
+  version "2.0.0-beta.207"
+  resolved "https://registry.yarnpkg.com/@tiptap/extension-underline/-/extension-underline-2.0.0-beta.207.tgz#f6d99b45445d7ec9868d0d7a8c55ba85f4b832d3"
+  integrity sha512-NJ7X997kge9EGX/kiM50hY8HIVPmt6pVymCVTNq0w9nEp69YZ0X1YelB6E2vvCXiI4bZNp0iIr3t/tTVlRBXmw==
+
 "@tiptap/react@^2.0.0-beta.199":
   version "2.0.0-beta.204"
   resolved "https://registry.npmjs.org/@tiptap/react/-/react-2.0.0-beta.204.tgz"
