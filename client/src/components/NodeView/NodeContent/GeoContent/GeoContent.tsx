@@ -59,7 +59,7 @@ export const GeoContent = React.memo(() => {
   // recoil state management
 
   return isLoaded ? (
-    <GoogleMap mapContainerClassName="map-container" zoom={10} center={center}>
+    <GoogleMap mapContainerClassName="map-container" zoom={15} center={center}>
       <Marker position={center}></Marker>
     </GoogleMap>
   ) : (

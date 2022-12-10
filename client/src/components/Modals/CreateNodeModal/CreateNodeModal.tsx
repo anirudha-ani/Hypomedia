@@ -240,12 +240,13 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
                 />
               </div>
             )}
-            <div className="modal-section">
+            <div style={{ marginTop: 25, padding: 10 }}>
               <span className="modal-title">
                 <div className="modal-title-header">Choose a parent node (optional):</div>
               </span>
               <div className="modal-treeView">
                 <TreeView
+                  create={true}
                   roots={roots}
                   parentNode={selectedParentNode}
                   setParentNode={setSelectedParentNode}
@@ -257,7 +258,15 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
           <ModalFooter>
             {error.length > 0 && <div className="modal-error">{error}</div>}
             <div className="modal-footer-buttons">
-              <Button text="Create" onClick={handleSubmit} />
+              <Button
+                style={{
+                  color: 'black',
+                  padding: 7,
+                  backgroundColor: '#B3ACFC',
+                }}
+                text="Create"
+                onClick={handleSubmit}
+              />
             </div>
           </ModalFooter>
         </ModalContent>

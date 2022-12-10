@@ -9,7 +9,7 @@
   padding-left: 20px;
   justify-content: left;
   align-items: center;
-  border-bottom: $standard-border;
+  border-bottom: white; //$standard-border;
   overflow: hidden;
   width: 100%;
   background-color: $primary-background-color;
@@ -17,6 +17,7 @@
 
   .nodeHeader-title {
     font-weight: 600;
+    color: white;
     min-width: fit-content;
   }
 
