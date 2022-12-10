@@ -6,6 +6,13 @@
     text-decoration: underline !important;
     cursor: pointer;
   }
+  &:focus {
+    outline: none;
+  }
+  white-space: pre-wrap;
+  word-wrap: break-word;
+
+  // TODO Make the editor and menu look nice!
 
   // It was taken from the documentation found here - https://tiptap.dev/api/marks/code
   code {
@@ -32,6 +39,14 @@ li {
   list-style-position: inside;
 }
 
+.editor-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
 .active-textEditorButton {
   font-size: 15px;
   user-select: none;
@@ -39,7 +54,6 @@ li {
   border-color: black;
   // Font options
   font-family: $header-font;
-
   // Color
   padding: 3px 15px;
   border-radius: 5px;
@@ -73,26 +87,24 @@ li {
 }
 
 .textEditorButton {
-  // display: flex;
-  // flex-direction: row;
-  // justify-content: center;
-  // align-items: center;
-  // width: max-content;
-  // height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  color: white;
+  height: 70%;
   font-size: 15px;
   user-select: none;
-  margin-right: 5px;
-  border-color: black;
   // Font options
   font-family: $header-font;
 
   // Color
   padding: 3px 15px;
   border-radius: 5px;
-  // gap: 5px;
+  gap: 5px;
   transition: 0.3s;
   cursor: pointer;
-  // margin: 1000;
+  margin: 0;
   background-color: $secondary-background-color;
 
   &:hover {
@@ -107,9 +119,10 @@ li {
   }
 
   &.active {
+    color: black;
     background-color: $selected-color;
     &:hover {
-      background-color: darken($selected-color, 20);
+      background-color: darken($selected-color, 10);
     }
   }
 
@@ -119,25 +132,34 @@ li {
 }
 
 .saveButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: max-content;
+  height: 70%;
   font-size: 15px;
   user-select: none;
-  margin-right: 5px;
-  margin-left: 100px;
-  border-color: black;
   // Font options
   font-family: $header-font;
 
   // Color
-  padding: 3px 15px;
+  padding: 5px 7px 5px 7px;
   border-radius: 5px;
-  // gap: 5px;
+  gap: 5px;
   transition: 0.3s;
   cursor: pointer;
-  // margin: 1000;
-  background-color: greenyellow;
+  margin: 0;
+  background-color: #72faca;
 
   &:hover {
-    background-color: darken(greenyellow, 30);
+    background-color: darken(#72faca, 15);
+  }
+
+  &.whiteButton {
+    background-color: white;
+    &:hover {
+      background-color: darken(white, 3);
+    }
   }
 
   &.active {

@@ -1,5 +1,8 @@
 import React from 'react'
 import { Editor } from '@tiptap/react'
+import { Button } from '../../../Button'
+import * as ri from 'react-icons/ri'
+import * as ai from 'react-icons/ai'
 import { background } from '@chakra-ui/react'
 
 interface IEditorProps {
@@ -8,6 +11,7 @@ interface IEditorProps {
 }
 
 export const TextMenu = (props: IEditorProps) => {
+  const customButtonStyle = { height: 30, width: 30 }
   const { editor, onSave } = props
   if (!editor) {
     return null
@@ -15,54 +19,59 @@ export const TextMenu = (props: IEditorProps) => {
 
   // TODO: Add all of the functionality for a rich text editor!
   return (
-    <div id="textMenu">
-      <button
+    <div className="editor-wrapper">
+      <Button
+        icon={<ai.AiOutlineBold />}
         onClick={() => editor.chain().focus().toggleBold().run()}
+        style={customButtonStyle}
+        // disabled={!editor.can().chain().focus().toggleBold().run()}
         className={
-          editor.isActive('bold') ? 'active-textEditorButton' : 'textEditorButton'
+          editor.isActive('bold') ? 'textEditorButton active' : 'textEditorButton'
         }
-      >
-        Bold
-      </button>
-      <button
+      />
+      <Button
+        icon={<ai.AiOutlineItalic />}
         onClick={() => editor.chain().focus().toggleItalic().run()}
+        style={customButtonStyle}
+        // disabled={!editor.can().chain().focus().toggleBold().run()}
         className={
-          editor.isActive('italic') ? 'active-textEditorButton' : 'textEditorButton'
+          editor.isActive('italic') ? 'textEditorButton active' : 'textEditorButton'
         }
-      >
-        Italic
-      </button>
-      {/* Documentation related to this implementation- https://tiptap.dev/api/marks/strike */}
-      <button
+      />
+      <Button
+        icon={<ai.AiOutlineStrikethrough />}
         onClick={() => editor.chain().focus().toggleStrike().run()}
+        style={customButtonStyle}
+        // disabled={!editor.can().chain().focus().toggleBold().run()}
         className={
-          editor.isActive('strike') ? 'active-textEditorButton' : 'textEditorButton'
+          editor.isActive('strike') ? 'textEditorButton active' : 'textEditorButton'
         }
-      >
-        StrikeThrough
-      </button>
-      {/*   // It was taken from the documentation found here - https://tiptap.dev/api/marks/code */}
-      <button
-        onClick={() => editor.chain().focus().toggleCode().run()}
+      />
+      <Button
+        icon={<ai.AiFillHighlight />}
+        onClick={() => editor.chain().focus().toggleHighlight({ color: '#B3ACFC' }).run()}
+        style={customButtonStyle}
+        // disabled={!editor.can().chain().focus().toggleBold().run()}
         className={
-          editor.isActive('code') ? 'active-textEditorButton' : 'textEditorButton'
+          editor.isActive('highlight') ? 'textEditorButton active' : 'textEditorButton'
         }
-      >
-        Codes
-      </button>
-      {/* This is taken from the documentation found here - https://tiptap.dev/api/nodes/blockquote */}
-      <button
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+      />
+      <Button
+        icon={<ai.AiOutlineUnderline />}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        style={customButtonStyle}
+        // disabled={!editor.can().chain().focus().toggleBold().run()}
         className={
-          editor.isActive('blockquote') ? 'active-textEditorButton' : 'textEditorButton'
+          editor.isActive('underline') ? 'textEditorButton active' : 'textEditorButton'
         }
-      >
-        Blockquote
-      </button>
-
-      <button onClick={() => onSave()} className={'saveButton'}>
-        Save
-      </button>
+      />
+      <Button
+        icon={<ai.AiFillSave />}
+        onClick={() => onSave()}
+        text="Save"
+        className='saveButton'
+        // disabled={!editor.can().chain().focus().toggleBold().run()}
+      />
     </div>
   )
 }

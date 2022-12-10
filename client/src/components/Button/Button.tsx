@@ -8,6 +8,7 @@ export interface IButtonProps {
   style?: Object
   text?: string
   isActive?: boolean
+  className?: string
 }
 
 /**
@@ -17,15 +18,24 @@ export interface IButtonProps {
  * @returns Button component
  */
 export const Button = (props: IButtonProps): JSX.Element => {
-  const { icon, text, onClick, style, isWhite, isActive } = props
-  return (
-    <div
-      className={`button ${isActive ? 'active' : ''} ${isWhite ? 'whiteButton' : ''}`}
-      onClick={onClick}
-      style={style}
-    >
-      {icon && <div className="icon">{icon}</div>}
-      {text && <span className="text">{text}</span>}
-    </div>
-  )
+  const { icon, text, onClick, style, isWhite, isActive, className } = props
+  if (!className) {
+    return (
+      <div
+        className={`button ${isActive ? 'active' : ''} ${isWhite ? 'whiteButton' : ''}`}
+        onClick={onClick}
+        style={style}
+      >
+        {icon && <div className="icon">{icon}</div>}
+        {text && <span className="text">{text}</span>}
+      </div>
+    )
+  } else {
+    return (
+      <div className={className} onClick={onClick} style={style}>
+        {icon && <div className="icon">{icon}</div>}
+        {text && <span className="text">{text}</span>}
+      </div>
+    )
+  }
 }

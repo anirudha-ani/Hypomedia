@@ -4,8 +4,8 @@ import { nodeTypeIcon, pathToString } from '../../../../../global'
 import { INode } from '../../../../../types'
 import './NodePreview.scss'
 import { NodePreviewContent } from './NodePreviewContent'
-import { useSetRecoilState } from 'recoil'
-import { selectedNodeState } from '../../../../../global/Atoms'
+import { useSetRecoilState, useRecoilState } from 'recoil'
+import { selectedNodeState, currentNodeState } from '../../../../../global/Atoms'
 
 export interface INodePreviewProps {
   node: INode
@@ -16,6 +16,8 @@ export const NodePreview = (props: INodePreviewProps) => {
   const { node } = props
   const { type, title, content } = node
   const setSelectedNode = useSetRecoilState(selectedNodeState)
+  const [curNode, setCurNode] = useRecoilState(currentNodeState)
+  const showUser = curNode.title == 'User Board'
   return (
     <Link to={`/${pathToString(node.filePath)}`}>
       <div
@@ -25,7 +27,7 @@ export const NodePreview = (props: INodePreviewProps) => {
         }}
       >
         <div className="content-preview">
-          <NodePreviewContent type={type} content={content} />
+          <NodePreviewContent type={type} content={content} user={showUser} />
         </div>
         <div className="node-info">
           <div className="info-container">
