@@ -8,6 +8,7 @@ $input-margin: 10px;
 .modal-treeView {
   max-height: $node-manager-max-height-in-modal;
   overflow: auto;
+  
 }
 
 .modal-input {
@@ -15,7 +16,6 @@ $input-margin: 10px;
 }
 
 .modal-section {
-  border-top: solid 1px $secondary-background-color;
   margin-top: 15px;
   padding-top: 10px;
 }

@@ -36,8 +36,8 @@
   .content-preview {
     overflow: hidden;
     height: 70%;
-    border-bottom: $standard-border;
-    padding: 2px;
+    //border-bottom: $standard-border;
+    padding: 0px;
     background-color: $secondary-background-color;
   }
 
@@ -52,6 +52,7 @@
     padding: 10px;
     .info-container {
       width: 100%;
+      border-radius: 5px;
       .main-info {
         display: flex;
         flex-direction: row;

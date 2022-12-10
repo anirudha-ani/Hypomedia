@@ -72,7 +72,7 @@ export const TreeViewItem = ({
         {hasChildren ? (
           <div className={`icon-hover ${hasChildren}`} onClick={toggleFolder}>
             <div
-              className="icon-wrapper"
+              className={`icon-wrapper ${isSelected}`}
               style={{
                 transform: hasChildren && isOpen ? 'rotate(90deg)' : undefined,
               }}
@@ -82,9 +82,9 @@ export const TreeViewItem = ({
           </div>
         ) : null}
         <div className={'icon-hover'}>
-          <div className="icon-wrapper">{icon}</div>
+          <div className={`icon-wrapper ${isSelected}`}>{icon}</div>
         </div>
-        <div className="text-wrapper">{title}</div>
+        <div className={`text-wrapper ${isSelected}`}>{title}</div>
       </div>
     )
   }
