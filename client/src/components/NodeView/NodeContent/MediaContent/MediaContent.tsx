@@ -71,6 +71,7 @@ export const MediaContent = () => {
             type: 'audio',
             timeStamp: progress.playedSeconds,
           }
+          console.log('progress', progress)
           setSelectedExtent(selectedExtent)
         }}
       />

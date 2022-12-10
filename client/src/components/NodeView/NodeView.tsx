@@ -216,6 +216,10 @@ export const NodeView = (props: INodeViewProps) => {
   }
 
   const handleCompleteLinkClick = async () => {
+    console.log('selected extent: ', selectedExtent)
+    console.log('start anchor: ', startAnchor)
+    console.log('current node: ', currentNode)
+
     const anchorsByNodeResp = await FrontendAnchorGateway.getAnchorsByNodeId(
       currentNode.nodeId
     )
