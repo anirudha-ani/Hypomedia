@@ -10,11 +10,12 @@ import { FolderPreviewContent } from './FolderPreviewContent'
 /** Props needed to render any node content */
 export interface INodeContentPreviewProps {
   content: any
+  user?: boolean
   type: NodeType
 }
 
 export const NodePreviewContent = (props: INodeContentPreviewProps) => {
-  const { type, content } = props
+  const { type, content, user } = props
   switch (type) {
     case 'image':
       return <ImagePreviewContent content={content} />
@@ -25,7 +26,7 @@ export const NodePreviewContent = (props: INodeContentPreviewProps) => {
     case 'text':
       return <TextPreviewContent content={content} />
     case 'folder':
-      return <FolderPreviewContent />
+      return <FolderPreviewContent user={user} />
 
     default:
       return null
