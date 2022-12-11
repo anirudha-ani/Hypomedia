@@ -73,7 +73,7 @@ export const AnchorItem = (props: IAnchorItemProps) => {
           handleAnchorDelete(anchorId)
         }}
       >
-        <div className="itemText">
+        <div className="itemText" style={{ color: 'white' }}>
           <ri.RiDeleteBin6Line />
           Delete anchor
         </div>
@@ -84,7 +84,7 @@ export const AnchorItem = (props: IAnchorItemProps) => {
 
   return (
     <div
-      className={`anchorItem ${isAnchorSelected ? 'selected' : ''}`}
+      className={`anchorItemMenu ${isAnchorSelected ? 'selected' : ''}`}
       key={anchorId}
       onContextMenu={handleAnchorRightClick}
       onClick={() => {

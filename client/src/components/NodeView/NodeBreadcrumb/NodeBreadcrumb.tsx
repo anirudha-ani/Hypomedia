@@ -28,13 +28,13 @@ export const NodeBreadcrumb = ({ path, nodeIdsToNodesMap }: INodeBreadcrumbProps
     if (isNotNullOrUndefined(nodeIdsToNodesMap[value])) {
       breadCrumb.push(
         <span
+          key={index.toString()}
           id={index == 0 ? 'bc-first' : 'bc'}
           onClick={() => setSelectedNode(nodeIdsToNodesMap[value])}
         >
           {nodeIdsToNodesMap[value].title}
         </span>
       )
-      breadCrumb.push(<span> </span>)
     }
   })
 

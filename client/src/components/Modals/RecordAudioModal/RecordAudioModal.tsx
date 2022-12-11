@@ -217,9 +217,9 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
             })
           }
           const transcibedNode = await createNodeFromModal(transcribedAttr)
-          if (transcibedNode && recordingNode) {
+          if (transcibedNode && interactionNode) {
             await FrontendNodeGateway.moveNode({
-              newParentId: recordingNode.nodeId,
+              newParentId: interactionNode.nodeId,
               nodeId: transcibedNode.nodeId,
             })
           }

@@ -26,10 +26,11 @@ export interface ILinkItemProps {
     oppAnchor: IAnchor
   }
   nodeIdsToNodesMap: NodeIdsToNodesMap
+  isAnchorSelected: boolean
 }
 
 export const LinkItem = (props: ILinkItemProps) => {
-  const { anchorLink } = props
+  const { anchorLink, isAnchorSelected } = props
   const setSelectedNode = useSetRecoilState(selectedNodeState)
   const setSelectedAnchors = useSetRecoilState(selectedAnchorsState)
   const setAlertIsOpen = useSetRecoilState(alertOpenState)
@@ -123,7 +124,7 @@ export const LinkItem = (props: ILinkItemProps) => {
           handleLinkDelete(link)
         }}
       >
-        <div className="itemText">
+        <div className="itemText" style={{ color: 'white' }}>
           <ri.RiDeleteBin6Line />
           Delete link
         </div>
@@ -140,7 +141,7 @@ export const LinkItem = (props: ILinkItemProps) => {
   const oppWholeNodeAnchor: boolean = oppExtent === null
   return (
     <div
-      className={`linkItem-${oppAnchorType}`}
+      className={`linkItem-${oppAnchorType} ${isAnchorSelected ? 'selected' : ''}`}
       key={link.linkId}
       onContextMenu={handleLinkRightClick}
       onClick={(e) => {
