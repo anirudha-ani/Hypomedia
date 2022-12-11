@@ -108,6 +108,11 @@ export const AnchorItem = (props: IAnchorItemProps) => {
             {getImagePreview(currentNode.content, extent, 40, 40)}
           </div>
         )}
+        {extent?.type == 'audio' && (
+          <div className="anchorPreview-text">
+            {extent.timeStamp ? extent.timeStamp : 'Audio'}
+          </div>
+        )}
       </div>
       {linkItems}
     </div>
