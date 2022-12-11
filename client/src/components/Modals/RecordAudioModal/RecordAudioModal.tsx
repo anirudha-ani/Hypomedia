@@ -1,5 +1,4 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -7,6 +6,10 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
+import { Button } from '../../Button'
+import * as ri from 'react-icons/ri'
+import * as ai from 'react-icons/ai'
+import { useGeolocated } from 'react-geolocated'
 import {
   INode,
   NodeIdsToNodesMap,
@@ -66,9 +69,19 @@ export const useRecorderPermission = (recordingType: RecordRTC.Options['type']) 
  */
 export const RecordAudioModal = (props: IRecordNodeModalProps) => {
   const { nodeIdsToNodesMap, onSubmit } = props
+  const [curNode, setCurNode] = useState<INode | null>()
+
+  const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
+    positionOptions: {
+      enableHighAccuracy: false,
+    },
+    userDecisionTimeout: 5000,
+  })
+
   // Your web app's Firebase configuration
   const [currNode, setCurrentNode] = useRecoilState(currentNodeState)
   const [percent, setPercent] = useState(0)
+  const [isrecording, setIsRecording] = useState(false)
   const [refresh, setRefresh] = useRecoilState(refreshState)
   const setSelectedNode = useSetRecoilState(selectedNodeState)
 
@@ -85,41 +98,19 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
 
   /** Reset all our state variables and close the modal */
   const handleClose = () => {
+    setPercent(0)
+    resetTranscript()
+    setIsRecording(false)
     onClose()
   }
 
-  // const transcribeContextClasses = async (storageURI: string) => {
-  //   console.log('Transcribing - storage URI: ' + storageURI)
-  //   const audio = {
-  //     uri: storageURI,
-  //   }
-
-  //   const speechContext = {
-  //     phrases: ['$TIME'],
-  //   }
-
-  //   const config = {
-  //     encoding: 'LINEAR16',
-  //     sampleRateHertz: 8000,
-  //     languageCode: 'en-US',
-  //     speechContexts: [speechContext],
-  //   }
-
-  //   const request = {
-  //     config: config,
-  //     audio: audio,
-  //   }
-
-  //   // Detects speech in the audio file.
-  //   const [response] = await client.recognize(request)
-  //   response.results.forEach((result: any, index: any) => {
-  //     const transcript = result.alternatives[0].transcript
-  //     console.log('-'.repeat(20))
-  //     console.log(`First alternative of result ${index}`)
-  //     console.log(`Transcript: ${transcript}`)
-  //   })
-  // }
-
+  const customButtonStyle = {
+    color: 'white',
+    marginRight: 15,
+    paddingRight: 20,
+    paddingTop: 7,
+    paddingBottom: 7,
+  }
   const recorder = useRecorderPermission('audio')
 
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } =
@@ -133,21 +124,56 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
 
   const startRecording = async () => {
     recorder.startRecording()
-    // SpeechRecognition.startListening({ continuous: true })
-    SpeechRecognition.startListening()
+    SpeechRecognition.startListening({ continuous: true })
+    setIsRecording(true)
+    // SpeechRecognition.startListening()
   }
 
   const stopRecording = async () => {
     await recorder.stopRecording()
     SpeechRecognition.stopListening()
 
+    while (coords?.latitude == 0 && coords?.longitude == 0) {
+      setCurNode(null)
+    }
+    const interactionId = (Math.random() + 1).toString(36).substring(7)
+
+    const interactionAttributes = {
+      content: '',
+      latitude: 0,
+      longitude: 0,
+      nodeIdsToNodesMap,
+      parentNodeId: currNode ? currNode.nodeId : null,
+      title: 'Interaction - ' + interactionId,
+      type: 'folder' as NodeType,
+    }
+    const interactionNode = await createNodeFromModal(interactionAttributes)
+
+    const geoAttributes = {
+      content: '',
+      latitude: coords ? coords?.latitude : 0,
+      longitude: coords ? coords?.longitude : 0,
+      nodeIdsToNodesMap,
+      parentNodeId: interactionNode ? interactionNode.nodeId : null,
+      title: 'Location - ' + interactionNode?.title,
+      type: 'geo' as NodeType,
+    }
+    console.log(geoAttributes)
+    const geoNode = await createNodeFromModal(geoAttributes)
+    if (geoNode && interactionNode) {
+      await FrontendNodeGateway.moveNode({
+        newParentId: interactionNode.nodeId,
+        nodeId: geoNode.nodeId,
+      })
+    }
+
     const blob = await recorder.getBlob()
-    const r = (Math.random() + 1).toString(36).substring(7)
+    const recordingId = (Math.random() + 1).toString(36).substring(7)
     // invokeSaveAsDialog(blob, 'random_name.webm')
-    const file = new File([blob], r + '.webm', {
+    const file = new File([blob], recordingId + '.webm', {
       type: 'audio/webm',
     })
-    const storageRef = ref(storage, '/' + currNode.title + '/' + r + '.webm')
+    const storageRef = ref(storage, '/' + currNode.title + '/' + recordingId + '.webm')
     const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
@@ -164,23 +190,40 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
         // download url
         getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
           console.log('audio url: ', url)
-          const attributes = {
+          const recordAttributes = {
             content: url,
             latitude: 0,
             longitude: 0,
             nodeIdsToNodesMap,
             parentNodeId: null,
-            title: 'Recording -' + currNode.title,
+            title: 'Recording - ' + currNode.title,
             type: 'audio' as NodeType,
           }
-          const node = await createNodeFromModal(attributes)
-          if (currNode && node) {
+
+          const transcribedAttr = {
+            content: transcript,
+            latitude: 0,
+            longitude: 0,
+            nodeIdsToNodesMap,
+            parentNodeId: null,
+            title: 'Transcription - ' + currNode.title,
+            type: 'text' as NodeType,
+          }
+          const recordingNode = await createNodeFromModal(recordAttributes)
+          if (interactionNode && recordingNode) {
             await FrontendNodeGateway.moveNode({
-              newParentId: currNode.nodeId,
-              nodeId: node.nodeId,
+              newParentId: interactionNode.nodeId,
+              nodeId: recordingNode.nodeId,
             })
           }
-          node && setSelectedNode(node)
+          const transcibedNode = await createNodeFromModal(transcribedAttr)
+          if (transcibedNode && interactionNode) {
+            await FrontendNodeGateway.moveNode({
+              newParentId: interactionNode.nodeId,
+              nodeId: transcibedNode.nodeId,
+            })
+          }
+          recordingNode && setSelectedNode(recordingNode)
 
           // transcribe speech to text using google speech to text api
           // POST https://speech.googleapis.com/v1/speech:recognize
@@ -204,14 +247,46 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
           <ModalHeader>Record Audio</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            {/* <p>{status}</p> */}
-            {/* <button onClick={startRecording}>Start Recording</button>
-            <button onClick={stopRecording}>Stop Recording</button>
-            <video src={mediaBlobUrl} controls autoPlay loop /> */}
-            {/* <audio src={mediaBlobUrl} controls autoPlay loop /> */}
-            <Button onClick={startRecording}>Start recording</Button>
-            <Button onClick={stopRecording}>Stop recording</Button>
-            <p>{transcript}</p>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Button
+                icon={<ri.RiRecordCircleFill />}
+                text="Record"
+                onClick={startRecording}
+                // style={customButtonStyle}
+                className={`recordButton ${isrecording}`}
+              />
+              <Button
+                icon={<ri.RiStopCircleFill />}
+                text="Stop"
+                onClick={stopRecording}
+                style={customButtonStyle}
+              />
+            </div>
+            {transcript.length > 0 ? (
+              <div
+                style={{
+                  color: 'white',
+                  backgroundColor: '#1C202A',
+                  border: '2px solid black',
+                  height: '100%',
+                  width: '100%',
+                  borderRadius: 5,
+                  marginBottom: 50,
+                  marginTop: 20,
+                  padding: transcript.length == 0 ? 0 : 20,
+                }}
+              >
+                <p>{transcript}</p>
+              </div>
+            ) : (
+              <div></div>
+            )}
           </ModalBody>
         </ModalContent>
       </div>

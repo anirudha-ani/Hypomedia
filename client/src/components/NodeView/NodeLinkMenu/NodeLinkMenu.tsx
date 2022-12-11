@@ -56,6 +56,7 @@ export const NodeLinkMenu = (props: INodeLinkMenuProps) => {
                 link={anchorLink.link}
                 anchorLink={anchorLink}
                 nodeIdsToNodesMap={nodeIdsToNodesMap}
+                isAnchorSelected={isAnchorSelected}
               />
             )
           }

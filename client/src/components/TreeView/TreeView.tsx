@@ -9,12 +9,13 @@ export interface ITreeViewProps {
   roots: RecursiveNodeTree[]
   parentNode: INode | null
   setParentNode: (node: INode) => void
+  create?: boolean
 }
 
 export const TreeView = (props: ITreeViewProps) => {
-  const { roots, parentNode, setParentNode, changeUrlOnClick = true } = props
+  const { roots, parentNode, setParentNode, changeUrlOnClick = true, create } = props
   return (
-    <div className="treeView-wrapper">
+    <div className={`treeView-wrapper ${create}`}>
       {roots.map((tree: RecursiveNodeTree) => (
         <TreeViewItem
           node={tree.node}

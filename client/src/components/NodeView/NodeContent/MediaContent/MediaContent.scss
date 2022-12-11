@@ -1,24 +1,24 @@
 @import '../../../../global/globalCssVariables';
 
-.imageWrapper {
+.audioWrapper {
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 
-  .imageContainer {
+  .audioContainer {
     overflow: visible;
     position: relative;
     //height: 300px;
     object-fit: cover;
 
-    .image {
+    .audio {
       width: 100%;
       height: 100%;
       overflow: hidden;
       position: relative;
 
-      .image-anchor {
+      .audio-anchor {
         border: 2px red solid;
         position: absolute;
         cursor: pointer;
@@ -34,7 +34,7 @@
         }
       }
 
-      .image-startAnchor {
+      .audio-startAnchor {
         background-color: rgba(212, 237, 218, 0.7);
         position: absolute;
         z-index: 1;
@@ -71,11 +71,12 @@
   }
 }
 
-.image-header {
+.audio-header {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
+
 
 // .image-style {
 //   width: 100%;

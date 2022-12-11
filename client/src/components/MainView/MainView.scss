@@ -17,10 +17,11 @@
     .treeView-container {
       max-width: 480;
       min-width: 100;
+      background-color: $primary-background-color;
     }
 
     .divider {
-      width: 3px;
+      width: 0px;
       background-color: $secondary-background-color;
       cursor: ew-resize;
       transition: 0.05s;

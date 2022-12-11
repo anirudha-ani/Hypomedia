@@ -6,9 +6,11 @@
   width: 100%;
   overflow: hidden;
   height: 100%;
-  font-size: 0.5em;
+  font-size: 12px;
   padding: 10px;
-  background-color: white;
-  align-items: flex-start;
+  background-color: $secondary-background-color;
+  color: white;
+  justify-content: center;
+  align-items: center;
   border-radius: 5px;
 }

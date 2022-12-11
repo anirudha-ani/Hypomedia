@@ -7,12 +7,20 @@
   height: fit-content;
   padding: 5px;
   border-radius: 5px;
-  background-color: $secondary-background-color;
+  background-color: $selected-color;
+  color: black;
   display: flex;
   flex-direction: column;
 
   &:hover {
-    background-color: darken(white, 20);
+    background-color: darken($selected-color, 10);
+  }
+
+  &.selected {
+    background-color: white;
+    &:hover {
+      background-color: darken(white, 7);
+    }
   }
 }
 
@@ -29,7 +37,7 @@
   grid-template-areas: 'linkContent linkPreview';
 
   &:hover {
-    background-color: darken(white, 20);
+    background-color: darken($selected-color, 10);
   }
 
   .linkPreview {

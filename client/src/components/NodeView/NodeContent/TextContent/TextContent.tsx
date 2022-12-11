@@ -39,6 +39,8 @@ import Code from '@tiptap/extension-code'
 import Document from '@tiptap/extension-document'
 import Paragraph from '@tiptap/extension-paragraph'
 import Text from '@tiptap/extension-text'
+import { Highlight } from '@tiptap/extension-highlight'
+import { Underline } from '@tiptap/extension-underline'
 import { flexbox } from '@chakra-ui/react'
 import { link } from 'fs'
 interface ITextContentProps {}
@@ -62,6 +64,8 @@ export const TextContent = (props: ITextContentProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Highlight.configure({ multicolor: true }),
+      Underline,
       Link.configure({ openOnClick: true, autolink: false, linkOnPaste: false }),
     ],
     content: content,
@@ -249,11 +253,17 @@ export const TextContent = (props: ITextContentProps) => {
   }
 
   return (
-    <div>
+    <div style={{ marginLeft: 20 }}>
       <TextMenu editor={editor} onSave={handleUpdateContent} />
       <div style={{ height: '20px' }}></div>
       <EditorContent
-        style={{ padding: '10px' }}
+        style={{
+          padding: '10px',
+          color: 'black',
+          border: '2px solid #B3ACFC',
+          borderRadius: 7,
+          backgroundColor: 'white',
+        }}
         editor={editor}
         onPointerUp={onPointerUp}
       />

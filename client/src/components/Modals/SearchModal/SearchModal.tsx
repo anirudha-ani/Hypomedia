@@ -108,7 +108,7 @@ export const SearchModal = (props: ICreateNodeModalProps) => {
     return listItems
   }
 
-  const customButtonStyle = { height: 40, marginLeft: 10, width: 40 }
+  const customButtonStyle = { height: 40, marginLeft: 10, width: 40, color: 'white' }
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -145,7 +145,13 @@ export const SearchModal = (props: ICreateNodeModalProps) => {
                 </Select>
               </div>
               <Button
-                style={customButtonStyle}
+                style={{
+                  height: 40,
+                  marginLeft: 10,
+                  width: 40,
+                  color: 'white',
+                  marginTop: 10,
+                }}
                 icon={<ri.RiSortDesc />}
                 onClick={() => {
                   setSortByDate(!sortByDate)

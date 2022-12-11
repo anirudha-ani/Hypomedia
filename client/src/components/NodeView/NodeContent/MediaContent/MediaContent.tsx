@@ -62,19 +62,31 @@ export const MediaContent = () => {
 
   return (
     <div>
-      <ReactPlayer
-        url={content}
-        controls={true}
-        playing={!isLinking}
-        onProgress={(progress) => {
-          const selectedExtent: Extent = {
-            type: 'audio',
-            timeStamp: progress.playedSeconds,
-          }
-          console.log('progress', progress)
-          setSelectedExtent(selectedExtent)
+      <div
+        style={{
+          marginLeft: 50,
+          marginTop: 50,
+          borderRadius: 25,
+          maxHeight: '100%',
+          maxWidth: '100%',
+          backgroundImage:
+            'url("https://cdn.dribbble.com/users/21883/screenshots/6804930/app-icon_1.gif")',
+          backgroundPosition: 'center',
         }}
-      />
+      >
+        <ReactPlayer
+          url={content}
+          controls={true}
+          playing={!isLinking}
+          onProgress={(progress) => {
+            const selectedExtent: Extent = {
+              type: 'audio',
+              timeStamp: progress.playedSeconds,
+            }
+            setSelectedExtent(selectedExtent)
+          }}
+        />
+      </div>
     </div>
   )
 }

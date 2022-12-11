@@ -1,12 +1,35 @@
 @import '../../global/globalCssVariables';
 
+// .treeView-wrapper {
+//   display: flex;
+//   position: relative;
+//   flex-direction: column;
+//   height: 100%;
+//   width: 100%;
+//   background-color: white;
+//   overflow: hidden;
+//   padding: 20px 0px 20px 0px;
+// }
+
 .treeView-wrapper {
   display: flex;
+  margin: 10px;
+  width: 100%;
+  max-width: 270px;
+  flex-basis: 150px;
   position: relative;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-  background-color: white;
+  height: 97.5%;
+  background-color: $secondary-background-color; //white;
   overflow: hidden;
-  padding: 20px 0px 20px 0px;
+  padding: 20px 20px 20px 20px;
+  border-width: 1.5px;
+  border-radius: 20px;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  border-color: $secondary-background-color;
+
+  &.true {
+    background-color: white;
+  }
 }

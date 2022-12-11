@@ -35,7 +35,7 @@ export const Header = (props: IHeaderProps) => {
       <div className="left-bar">
         <Link to={'/'}>
           <div className="name" onClick={onHomeClick}>
-            My<b>Hypermedia</b>
+            Hypo<b>Media</b>
           </div>
         </Link>
         <Link to={'/'}>
@@ -53,6 +53,7 @@ export const Header = (props: IHeaderProps) => {
           onClick={onCreateNodeButtonClick}
         />
         <Button
+          isWhite={isLinking}
           style={customButtonStyle}
           icon={<ai.AiOutlineSearch />}
           onClick={onClickSearchButton}
