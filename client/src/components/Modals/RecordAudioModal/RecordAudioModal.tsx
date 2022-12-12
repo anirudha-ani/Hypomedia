@@ -10,7 +10,6 @@ import { Button } from '../../Button'
 import * as ri from 'react-icons/ri'
 import * as ai from 'react-icons/ai'
 import { useGeolocated } from 'react-geolocated'
-import Geocode from 'react-geocode'
 import {
   INode,
   NodeIdsToNodesMap,
@@ -78,66 +77,6 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
     },
     userDecisionTimeout: 5000,
   })
-
-  Geocode.setApiKey('AIzaSyB8iT3_3yLhvU-5LPl6kHHi63H7yKMW-So')
-
-  // set response language. Defaults to english.
-  Geocode.setLanguage('en')
-
-  // set response region. Its optional.
-  // A Geocoding request with region=es (Spain) will return the Spanish city.
-  Geocode.setRegion('es')
-
-  // set location_type filter . Its optional.
-  // google geocoder returns more that one address for given lat/lng.
-  // In some case we need one address as response for which google itself provides a location_type filter.
-  // So we can easily parse the result for fetching address components
-  // ROOFTOP, RANGE_INTERPOLATED, GEOMETRIC_CENTER, APPROXIMATE are the accepted values.
-  // And according to the below google docs in description, ROOFTOP param returns the most accurate result.
-  Geocode.setLocationType('ROOFTOP')
-
-  // Enable or disable logs. Its optional.
-  Geocode.enableDebug()
-
-  let city: any = null
-  let state: any = null
-  let country: any = null
-  let address: any = null
-
-  // Get address from latitude & longitude.
-  if (coords) {
-    Geocode.fromLatLng(String(coords.latitude), String(coords.longitude)).then(
-      (response: any) => {
-        address = response.results[0].formatted_address
-
-        for (let i = 0; i < response.results[0].address_components.length; i++) {
-          for (
-            let j = 0;
-            j < response.results[0].address_components[i].types.length;
-            j++
-          ) {
-            switch (response.results[0].address_components[i].types[j]) {
-              case 'locality':
-                city = response.results[0].address_components[i].long_name
-                break
-              case 'administrative_area_level_1':
-                state = response.results[0].address_components[i].long_name
-                break
-              case 'country':
-                country = response.results[0].address_components[i].long_name
-                break
-            }
-          }
-        }
-
-        // console.log('Google loc = ', city, state, country)
-        // console.log(address)
-      },
-      (error: any) => {
-        console.error(error)
-      }
-    )
-  }
 
   // Your web app's Firebase configuration
   const [currNode, setCurrentNode] = useRecoilState(currentNodeState)

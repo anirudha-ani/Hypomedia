@@ -28,6 +28,7 @@ interface INodeHeaderProps {
   onClickShowLinkGraph: () => void
   onClickRecordAudio: () => void
   onClickShowTimeline: () => void
+  isPersonNode: boolean
 }
 
 export const NodeHeader = (props: INodeHeaderProps) => {
@@ -39,6 +40,7 @@ export const NodeHeader = (props: INodeHeaderProps) => {
     onClickShowLinkGraph,
     onClickRecordAudio,
     onClickShowTimeline,
+    isPersonNode,
   } = props
   const currentNode = useRecoilValue(currentNodeState)
   const [refresh, setRefresh] = useRecoilState(refreshState)
@@ -198,13 +200,16 @@ export const NodeHeader = (props: INodeHeaderProps) => {
               style={{ color: 'white' }}
               onClick={onClickShowLinkGraph}
             />
-            <Button
-              icon={<ri.RiMicLine />}
-              text="Record"
-              style={{ color: 'white' }}
-              onClick={onClickRecordAudio}
-            />
-            {folder && (
+            {isPersonNode && (
+              <Button
+                icon={<ri.RiMicLine />}
+                text="Record"
+                style={{ color: 'white' }}
+                onClick={onClickRecordAudio}
+              />
+            )}
+
+            {isPersonNode && (
               <Button
                 icon={<ri.RiTimeLine />}
                 text="Show Timeline"
