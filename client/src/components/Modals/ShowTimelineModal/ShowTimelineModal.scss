@@ -51,11 +51,23 @@ $input-margin: 10px;
 .modal-body-timeline {
   display: flex;
   flex-direction: row;
-  background-color: gray;
+  background-color: #1c202a;
 }
 
 .modal-footer-buttons {
   display: flex;
   flex-direction: row;
   font-weight: 500;
+}
+
+.vertical-timeline-element-title {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: #1c202a;
+}
+
+.vertical-timeline-element-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1c202a;
 }
