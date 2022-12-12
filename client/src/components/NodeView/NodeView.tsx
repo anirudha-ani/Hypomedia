@@ -1,7 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FrontendAnchorGateway } from '../../anchors'
 import { generateObjectId } from '../../global'
-import { IAnchor, ILink, INode, isSameExtent, NodeIdsToNodesMap } from '../../types'
+import {
+  IAnchor,
+  ILink,
+  INode,
+  isSameExtent,
+  NodeIdsToNodesMap,
+  RecursiveNodeTree,
+} from '../../types'
 import { NodeBreadcrumb } from './NodeBreadcrumb'
 import { NodeContent } from './NodeContent'
 import { NodeHeader } from './NodeHeader'
@@ -40,6 +47,7 @@ export interface INodeViewProps {
   // children used when rendering folder node
   onSubmit: () => unknown
   childNodes?: INode[]
+  rootNodes: RecursiveNodeTree[]
 }
 
 /** Full page view focused on a node's content, with annotations and links */
@@ -53,6 +61,7 @@ export const NodeView = (props: INodeViewProps) => {
     onMoveButtonClick,
     childNodes,
     onSubmit,
+    rootNodes,
   } = props
   const setIsLinking = useSetRecoilState(isLinkingState)
   const [startAnchor, setStartAnchor] = useRecoilState(startAnchorState)
@@ -269,6 +278,10 @@ export const NodeView = (props: INodeViewProps) => {
   const divider = useRef<HTMLHeadingElement>(null)
   let xLast: number
   let dragging: boolean = false
+  
+  const isPersonNode = () => {
+    for ( var item in rootNodes:
+  }
 
   const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault()

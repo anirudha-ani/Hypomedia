@@ -193,6 +193,9 @@ export const MainView = React.memo(function MainView() {
 
   const treeView = useRef<HTMLHeadingElement>(null)
 
+  console.log('Root nodes = ', rootNodes)
+  // console.log("Root recursive node tree = ", rootRecursiveNodeTree)
+
   return (
     <ChakraProvider>
       {!isAppLoaded ? (
@@ -254,6 +257,7 @@ export const MainView = React.memo(function MainView() {
                 onCreateNodeButtonClick={handleCreateNodeButtonClick}
                 nodeIdsToNodesMap={nodeIdsToNodesMap}
                 onSubmit={loadRootsFromDB}
+                rootNodes={rootNodes}
               />
             </div>
           </div>
