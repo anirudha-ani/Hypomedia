@@ -52,10 +52,11 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
       timeLineItems.push(
         <VerticalTimelineElement
           className="vertical-timeline-element--work"
-          contentStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-          contentArrowStyle={{ borderRight: '7px solid  rgb(33, 150, 243)' }}
-          date={timeLineData[i].time}
-          iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
+          contentStyle={{ background: '#b3acfc', color: '#ffffff' }}
+          contentArrowStyle={{ borderRight: '7px solid  #b3acfc' }}
+          // YYYY-MM-DDTHH:MM:SS
+          date={timeLineData[i].time.slice(0, 19)}
+          iconStyle={{ background: '#b3acfc', color: '#ffffff' }}
           // icon={<WorkIcon />}
         >
           <h3 className="vertical-timeline-element-title">
@@ -67,25 +68,16 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
           <p>{timeLineData[i].interactionContent}</p>
         </VerticalTimelineElement>
       )
-      //   if (i + 1 < timeLineData.length) {
-      //     timeLineItems.push(
-      //       <VerticalTimelineElement
-      //         className="vertical-timeline-element--work"
-      //         date={timeLineData[i + 1].time}
-      //         iconStyle={{ background: 'rgb(33, 150, 243)', color: '#fff' }}
-      //         // icon={<WorkIcon />}
-      //       >
-      //         <h3 className="vertical-timeline-element-title">
-      //           {timeLineData[i + 1].interactionName}
-      //         </h3>
-      //         <h4 className="vertical-timeline-element-subtitle">
-      //           {`${timeLineData[i + 1].city}, ${timeLineData[i + 1].country}`}
-      //         </h4>
-      //         <p>{timeLineData[i + 1].interactionContent}</p>
-      //       </VerticalTimelineElement>
-      //     )
-      //   }
     }
+
+    // sort timeLineItems by date
+    timeLineItems.sort((a, b) => {
+      const dateA = new Date(a.props.date)
+      const dateB = new Date(b.props.date)
+
+      return dateA.getTime() - dateB.getTime()
+    })
+
     return <VerticalTimeline>{timeLineItems}</VerticalTimeline>
     return (
       <VerticalTimeline>
@@ -183,7 +175,7 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
       <div>
         <ModalOverlay />
         <ModalContent maxW="66rem" alignItems="center">
-          <ModalHeader>Time Line</ModalHeader>
+          <ModalHeader>Timeline</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <div className="modal-body-timeline" style={{ width: '980px' }}>

@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FrontendAnchorGateway } from '../../anchors'
 import { generateObjectId } from '../../global'
 import Geocode from 'react-geocode'
-import format from 'date-fns/format'
 
 import {
   IAnchor,
