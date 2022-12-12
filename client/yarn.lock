@@ -3580,6 +3580,11 @@
   dependencies:
     "@types/react" "^17"
 
+"@types/react-geocode@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@types/react-geocode/-/react-geocode-0.2.1.tgz#0ec8d5d8d3e8994136f147a3d3cb8a4136ad2fd6"
+  integrity sha512-iZAvDCFNYc3jZqB/MoPkOE/Gc0AzrBkCjpQnVpRKrDB6v8k6i4Cp+fpV7y3MLg13zasovTpuguo25nkVc31fcA==
+
 "@types/react-modal@^3.13.1":
   version "3.13.1"
   resolved "https://registry.npmjs.org/@types/react-modal/-/react-modal-3.13.1.tgz"
@@ -12030,6 +12035,13 @@ react-focus-lock@2.5.2:
     use-callback-ref "^1.2.5"
     use-sidecar "^1.0.5"
 
+react-geocode@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/react-geocode/-/react-geocode-0.2.3.tgz#e27fa3f212a2629b2b2bb2a3a325a12b802b2dae"
+  integrity sha512-sIpbgmn1IUzAxO4haOZ6jeeFnMD8ya9PC38yiNrmJ9vPWbvAO2D/2yfCBzZjGZVUm4PRzKAc0KghXfaEnug0TQ==
+  dependencies:
+    regenerator-runtime "^0.13.3"
+
 react-geolocated@^4.0.3:
   version "4.0.3"
   resolved "https://registry.npmjs.org/react-geolocated/-/react-geolocated-4.0.3.tgz"
@@ -12366,7 +12378,7 @@ regenerator-runtime@^0.11.0:
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
 
-regenerator-runtime@^0.13.11, regenerator-runtime@^0.13.7:
+regenerator-runtime@^0.13.11, regenerator-runtime@^0.13.3, regenerator-runtime@^0.13.7:
   version "0.13.11"
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz"
   integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==

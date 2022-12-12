@@ -1,7 +1,18 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { FrontendAnchorGateway } from '../../anchors'
 import { generateObjectId } from '../../global'
-import { IAnchor, ILink, INode, isSameExtent, NodeIdsToNodesMap } from '../../types'
+import Geocode from 'react-geocode'
+import format from 'date-fns/format'
+
+import {
+  IAnchor,
+  ILink,
+  INode,
+  isSameExtent,
+  NodeIdsToNodesMap,
+  nodeTypes,
+  RecursiveNodeTree,
+} from '../../types'
 import { NodeBreadcrumb } from './NodeBreadcrumb'
 import { NodeContent } from './NodeContent'
 import { NodeHeader } from './NodeHeader'
@@ -40,6 +51,7 @@ export interface INodeViewProps {
   // children used when rendering folder node
   onSubmit: () => unknown
   childNodes?: INode[]
+  rootNodes: RecursiveNodeTree[]
 }
 
 /** Full page view focused on a node's content, with annotations and links */
@@ -53,6 +65,7 @@ export const NodeView = (props: INodeViewProps) => {
     onMoveButtonClick,
     childNodes,
     onSubmit,
+    rootNodes,
   } = props
   const setIsLinking = useSetRecoilState(isLinkingState)
   const [startAnchor, setStartAnchor] = useRecoilState(startAnchorState)
@@ -68,6 +81,16 @@ export const NodeView = (props: INodeViewProps) => {
   const [isLinkGraphOpen, setIsLinkGraphOpen] = useState(false)
   const [isTimelineOpen, setIsTimelineOpen] = useState(false)
   const [isRecordingAudio, setIsRecordingAudio] = useState(false)
+
+  const [timeLineData, setTimeLineData] = useState<
+    {
+      city: string
+      country: string
+      time: string
+      interactionName: string
+      interactionContent: string
+    }[]
+  >([])
   const [currNode, setCurrentNode] = useRecoilState(currentNodeState)
   const {
     filePath: { path },
@@ -76,6 +99,10 @@ export const NodeView = (props: INodeViewProps) => {
   useEffect(() => {
     setCurrentNode(currentNode)
   })
+
+  useEffect(() => {
+    fetchTimeLine()
+  }, [currentNode])
 
   // const currentNode = useRecoilValue(currentNodeState)
   const linkMenuRefresh = useRecoilValue(refreshLinkListState)
@@ -270,6 +297,15 @@ export const NodeView = (props: INodeViewProps) => {
   let xLast: number
   let dragging: boolean = false
 
+  const isPersonNode = () => {
+    for (let i = 0; i < rootNodes.length; i++) {
+      if (currentNode.nodeId == rootNodes[i].node.nodeId) {
+        return true
+      }
+    }
+    return false
+  }
+
   const onPointerDown = (e: React.PointerEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -315,6 +351,98 @@ export const NodeView = (props: INodeViewProps) => {
     setIsTimelineOpen(!isTimelineOpen)
   }
 
+  const fetchTimeLine = () => {
+    setTimeLineData([])
+    for (let i = 0; i < rootNodes.length; i++) {
+      if (currentNode.nodeId == rootNodes[i].node.nodeId) {
+        const interactions = rootNodes[i].children
+
+        // const timeLineData = []
+
+        for (let j = 0; j < interactions.length; j++) {
+          let city = ''
+          let country = ''
+          let time = ''
+          const interactionName = interactions[j].node.title
+          let interactionContent = ''
+
+          if (interactions[j].node.dateCreated != undefined) {
+            time = interactions[j].node.dateCreated?.toLocaleString() ?? '0'
+          }
+
+          const interactionElements = interactions[j].children
+
+          for (let k = 0; k < interactionElements.length; k++) {
+            if (interactionElements[k].node.type == 'text') {
+              interactionContent = interactionElements[k].node.content
+            }
+          }
+
+          for (let k = 0; k < interactionElements.length; k++) {
+            if (interactionElements[k].node.type == 'geo') {
+              const latitude = interactionElements[k].node.latitude
+              const longitude = interactionElements[k].node.longitude
+
+              Geocode.setApiKey('AIzaSyB8iT3_3yLhvU-5LPl6kHHi63H7yKMW-So')
+              Geocode.setLanguage('en')
+              Geocode.setRegion('es')
+              Geocode.setLocationType('ROOFTOP')
+              Geocode.enableDebug()
+
+              // Get address from latitude & longitude.
+
+              Geocode.fromLatLng(String(latitude), String(longitude)).then(
+                (response: any) => {
+                  for (
+                    let i = 0;
+                    i < response.results[0].address_components.length;
+                    i++
+                  ) {
+                    for (
+                      let j = 0;
+                      j < response.results[0].address_components[i].types.length;
+                      j++
+                    ) {
+                      switch (response.results[0].address_components[i].types[j]) {
+                        case 'locality':
+                          city = response.results[0].address_components[i].long_name
+                          break
+                        case 'country':
+                          country = response.results[0].address_components[i].long_name
+                          break
+                      }
+                    }
+                  }
+                  // console.log('Interaction name = ', interactionName)
+                  // console.log('Interaction city = ', city)
+                  // console.log('Interaction country = ', country)
+                  // console.log('Interaction time = ', time)
+                  // console.log('Interaction interactionContent = ', interactionContent)
+
+                  setTimeLineData((prevPrevTimelineData) => [
+                    ...prevPrevTimelineData,
+                    {
+                      city: city,
+                      country: country,
+                      time: time,
+                      interactionName: interactionName,
+                      interactionContent: interactionContent,
+                    },
+                  ])
+                  // console.log('Google loc = ', city, state, country)
+                  // console.log(address)
+                },
+                (error: any) => {
+                  console.error(error)
+                }
+              )
+            }
+          }
+        }
+      }
+    }
+  }
+
   const handleRecordAudio = () => {
     setIsRecordingAudio(!isRecordingAudio)
   }
@@ -330,6 +458,7 @@ export const NodeView = (props: INodeViewProps) => {
           onClickShowLinkGraph={handleShowLinkGraph}
           onClickRecordAudio={handleRecordAudio}
           onClickShowTimeline={handleShowTimeline}
+          isPersonNode={isPersonNode()}
         />
         <div className="nodeView-scrollable">
           {hasBreadcrumb && (
@@ -365,12 +494,16 @@ export const NodeView = (props: INodeViewProps) => {
         nodes={nodes}
         edges={edges}
       />
-      <ShowTimelineModal
-        isOpen={isTimelineOpen}
-        onClose={() => {
-          setIsTimelineOpen(false)
-        }}
-      />
+      {isPersonNode() && (
+        <ShowTimelineModal
+          isOpen={isTimelineOpen}
+          onClose={() => {
+            setIsTimelineOpen(false)
+          }}
+          timeLineData={timeLineData}
+        />
+      )}
+
       <RecordAudioModal
         isOpen={isRecordingAudio}
         nodeIdsToNodesMap={nodeIdsToNodesMap}
