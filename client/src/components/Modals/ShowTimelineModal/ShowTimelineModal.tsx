@@ -27,6 +27,7 @@ export interface ICreateNodeModalProps {
     time: string
     interactionName: string
     interactionContent: string
+    interactionId: string
   }[]
 }
 
@@ -48,7 +49,15 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
   const loadTimeline = () => {
     const timeLineItems: JSX.Element[] = []
 
+    const uniqueInteractionsID = new Set()
+
     for (let i = 0; i < timeLineData.length; i++) {
+      if (uniqueInteractionsID.has(timeLineData[i].interactionId)) {
+        continue
+      }
+
+      uniqueInteractionsID.add(timeLineData[i].interactionId)
+
       timeLineItems.push(
         <VerticalTimelineElement
           className="vertical-timeline-element--work"
