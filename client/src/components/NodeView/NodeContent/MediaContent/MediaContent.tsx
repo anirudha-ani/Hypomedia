@@ -23,6 +23,7 @@ import {
 } from '../../../../global/Atoms'
 import { FrontendAnchorGateway } from '../../../../anchors'
 import { FrontendNodeGateway } from '../../../../nodes'
+import { IMediaExtent, isIMediaExtent } from '../../../../types/Extent'
 import {
   Extent,
   IAnchor,
@@ -41,52 +42,63 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react'
 
-interface IMediaContentProps {}
+interface IMediaContentProps {
+  jump: boolean
+}
 
 /** The content of an audio/video node, including any anchors */
 export const MediaContent = () => {
   // recoil state management
   const currentNode = useRecoilValue(currentNodeState)
-  const [played, setPlayed] = useState(0)
-  const [refreshLinkList, setRefreshLinkListState] = useRecoilState(refreshLinkListState)
-  const [selectedAnchors, setSelectedAnchors] = useRecoilState(selectedAnchorsState)
   const [selectedExtent, setSelectedExtent] = useRecoilState(selectedExtentState)
-  const [currNode, setCurrentNode] = useRecoilState(currentNodeState)
-  const setSelectedNode = useSetRecoilState(selectedNodeState)
-  const [refresh, setRefresh] = useRecoilState(refreshState)
   const [isLinking, setIsLinking] = useRecoilState(isLinkingState)
-  const [heightValue, setHeightValue] = React.useState(currentNode.height)
-  const [widthValue, setWidthValue] = React.useState(currentNode.width)
+  const [isPlaying, setIsPlaying] = React.useState(true)
+  const [isReady, setIsReady] = React.useState(false)
+  const [selAnchors, setSelAnchors] = useRecoilState(selectedAnchorsState)
+  const playerRef = React.useRef<any>()
+  const timeToStart = 0
+
+  if (selAnchors.length > 0) {
+    let audioExtent: IMediaExtent | null = null
+    for (let i = 0; i < selAnchors.length; i++) {
+      if (selAnchors[i].extent?.type == 'audio') {
+        console.log(selAnchors[i].extent)
+        if (isIMediaExtent(selAnchors[i].extent)) {
+          audioExtent = selAnchors[i].extent as IMediaExtent
+          playerRef.current.seekTo(audioExtent.timeStamp, 'seconds')
+        }
+        setSelAnchors([])
+      }
+    }
+  }
 
   const content = currentNode.content
-
   return (
-    <div>
-      <div
-        style={{
-          marginLeft: 50,
-          marginTop: 50,
-          borderRadius: 25,
-          maxHeight: '100%',
-          maxWidth: '100%',
-          backgroundImage:
-            'url("https://cdn.dribbble.com/users/21883/screenshots/6804930/app-icon_1.gif")',
-          backgroundPosition: 'center',
+    <div
+      style={{
+        marginLeft: 50,
+        marginTop: 50,
+        borderRadius: 25,
+        maxHeight: '100%',
+        maxWidth: '100%',
+        backgroundImage:
+          'url("https://cdn.dribbble.com/users/21883/screenshots/6804930/app-icon_1.gif")',
+        backgroundPosition: 'center',
+      }}
+    >
+      <ReactPlayer
+        url={content}
+        ref={playerRef}
+        controls={true}
+        playing={!isLinking}
+        onProgress={(progress) => {
+          const time: Extent = {
+            type: 'audio',
+            timeStamp: progress.playedSeconds,
+          }
+          setSelectedExtent(time)
         }}
-      >
-        <ReactPlayer
-          url={content}
-          controls={true}
-          playing={!isLinking}
-          onProgress={(progress) => {
-            const selectedExtent: Extent = {
-              type: 'audio',
-              timeStamp: progress.playedSeconds,
-            }
-            setSelectedExtent(selectedExtent)
-          }}
-        />
-      </div>
+      />
     </div>
   )
 }

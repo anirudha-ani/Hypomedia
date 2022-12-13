@@ -83,6 +83,7 @@ export const NodeView = (props: INodeViewProps) => {
 
   const [timeLineData, setTimeLineData] = useState<
     {
+      area: string
       city: string
       country: string
       time: string
@@ -245,10 +246,6 @@ export const NodeView = (props: INodeViewProps) => {
   }
 
   const handleCompleteLinkClick = async () => {
-    console.log('selected extent: ', selectedExtent)
-    console.log('start anchor: ', startAnchor)
-    console.log('current node: ', currentNode)
-
     const anchorsByNodeResp = await FrontendAnchorGateway.getAnchorsByNodeId(
       currentNode.nodeId
     )
@@ -362,6 +359,7 @@ export const NodeView = (props: INodeViewProps) => {
         for (let j = 0; j < interactions.length; j++) {
           let city = ''
           let country = ''
+          let area = ''
           let time = ''
           const interactionName = interactions[j].node.title
           let interactionContent = ''
@@ -405,6 +403,9 @@ export const NodeView = (props: INodeViewProps) => {
                       j++
                     ) {
                       switch (response.results[0].address_components[i].types[j]) {
+                        case 'route':
+                          area = response.results[0].address_components[i].long_name
+                          break
                         case 'locality':
                           city = response.results[0].address_components[i].long_name
                           break
@@ -423,6 +424,7 @@ export const NodeView = (props: INodeViewProps) => {
                   setTimeLineData((prevPrevTimelineData) => [
                     ...prevPrevTimelineData,
                     {
+                      area: area,
                       city: city,
                       country: country,
                       time: time,

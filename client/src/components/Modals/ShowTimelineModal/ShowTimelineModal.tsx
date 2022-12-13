@@ -23,6 +23,7 @@ export interface ICreateNodeModalProps {
   // edges: any
   onClose: () => void
   timeLineData: {
+    area: string
     city: string
     country: string
     time: string
@@ -40,7 +41,7 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
   // deconstruct props variables
   const { isOpen, onClose, timeLineData } = props
 
-  console.log('Timeline data = ', timeLineData)
+  // console.log('Timeline data = ', timeLineData)
 
   /** Reset all our state variables and close the modal */
   const handleClose = () => {
@@ -50,7 +51,9 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
   const loadTimeline = () => {
     const timeLineItems: JSX.Element[] = []
 
+
     const uniqueInteractionsID = new Set()
+
 
     for (let i = 0; i < timeLineData.length; i++) {
       if (uniqueInteractionsID.has(timeLineData[i].interactionId)) {
@@ -61,6 +64,7 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
 
       timeLineItems.push(
         <VerticalTimelineElement
+          key={i.toString()}
           className="vertical-timeline-element--work"
           contentStyle={{ background: '#b3acfc', color: '#ffffff' }}
           contentArrowStyle={{ borderRight: '7px solid  #b3acfc' }}
@@ -110,7 +114,10 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
           <ModalHeader>Timeline</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className="modal-body-timeline" style={{ width: '980px' }}>
+            <div
+              className="modal-body-timeline"
+              style={{ width: '980px', overflowY: 'scroll' }}
+            >
               {loadTimeline()}
             </div>
           </ModalBody>

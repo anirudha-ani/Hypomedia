@@ -91,6 +91,7 @@ export class NodeRouter {
     NodeExpressRouter.post('/search', async (req: Request, res: Response) => {
       try {
         const searchTerm = req.body.searchTerm
+        console.log(searchTerm)
         const response: IServiceResponse<INode[]> =
           await this.BackendNodeGateway.getNodesBySearchTerm(searchTerm)
         res.status(200).send(response)
