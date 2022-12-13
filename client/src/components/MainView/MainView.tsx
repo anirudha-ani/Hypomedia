@@ -193,7 +193,6 @@ export const MainView = React.memo(function MainView() {
 
   const treeView = useRef<HTMLHeadingElement>(null)
 
-  console.log('Root nodes = ', rootNodes)
   // console.log("Root recursive node tree = ", rootRecursiveNodeTree)
 
   return (

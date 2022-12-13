@@ -158,7 +158,7 @@ export const RecordAudioModal = (props: IRecordNodeModalProps) => {
       title: 'Location - ' + interactionNode?.title,
       type: 'geo' as NodeType,
     }
-    console.log(geoAttributes)
+    // console.log(geoAttributes)
     const geoNode = await createNodeFromModal(geoAttributes)
     if (geoNode && interactionNode) {
       await FrontendNodeGateway.moveNode({

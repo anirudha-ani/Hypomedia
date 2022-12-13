@@ -31,6 +31,7 @@ interface IGeoContentProps {}
 /** The content of an audio/video node, including any anchors */
 // eslint-disable-next-line react/display-name
 export const GeoContent = React.memo(() => {
+  
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: apiKey,
@@ -43,6 +44,8 @@ export const GeoContent = React.memo(() => {
   const latitude = currentNode.latitude
   const longitude = currentNode.longitude
   const center = { lat: latitude, lng: longitude }
+
+  
 
   const onLoad = React.useCallback(function callback(map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
