@@ -12,6 +12,7 @@ import {
   VerticalTimelineElement,
 } from 'react-vertical-timeline-component'
 import 'react-vertical-timeline-component/style.min.css'
+import { Link } from 'react-router-dom'
 // import Modal from 'react-modal'
 
 import './ShowTimelineModal.scss'
@@ -28,6 +29,7 @@ export interface ICreateNodeModalProps {
     time: string
     interactionName: string
     interactionContent: string
+    interactionId: string
   }[]
 }
 
@@ -48,7 +50,18 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
 
   const loadTimeline = () => {
     const timeLineItems: JSX.Element[] = []
+
+
+    const uniqueInteractionsID = new Set()
+
+
     for (let i = 0; i < timeLineData.length; i++) {
+      if (uniqueInteractionsID.has(timeLineData[i].interactionId)) {
+        continue
+      }
+
+      uniqueInteractionsID.add(timeLineData[i].interactionId)
+
       timeLineItems.push(
         <VerticalTimelineElement
           key={i.toString()}
@@ -60,14 +73,24 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
           iconStyle={{ background: '#b3acfc', color: '#ffffff' }}
           // icon={<WorkIcon />}
         >
-          <h3 className="vertical-timeline-element-title">
-            <b>{timeLineData[i].interactionName}</b>
-          </h3>
-          <h4 className="vertical-timeline-element-subtitle">
-            {`${timeLineData[i].area}, ${timeLineData[i].city}`}
-          </h4>
-          <h4 className="vertical-timeline-element-subtitle">{`${timeLineData[i].country}`}</h4>
-          <p>{timeLineData[i].interactionContent}</p>
+          <Link
+            to={`/${timeLineData[i].interactionId}/`}
+            key={timeLineData[i].interactionId}
+          >
+            <div
+              onClick={() => {
+                handleClose()
+              }}
+            >
+              <h3 className="vertical-timeline-element-title">
+                {timeLineData[i].interactionName}
+              </h3>
+              <h4 className="vertical-timeline-element-subtitle">
+                {`${timeLineData[i].city}, ${timeLineData[i].country}`}
+              </h4>
+              <p>{timeLineData[i].interactionContent}</p>
+            </div>{' '}
+          </Link>
         </VerticalTimelineElement>
       )
     }

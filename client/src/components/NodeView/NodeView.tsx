@@ -89,6 +89,7 @@ export const NodeView = (props: INodeViewProps) => {
       time: string
       interactionName: string
       interactionContent: string
+      interactionId: string
     }[]
   >([])
   const [currNode, setCurrentNode] = useRecoilState(currentNodeState)
@@ -362,6 +363,7 @@ export const NodeView = (props: INodeViewProps) => {
           let time = ''
           const interactionName = interactions[j].node.title
           let interactionContent = ''
+          const interactionId = interactions[j].node.nodeId
 
           if (interactions[j].node.dateCreated != undefined) {
             time = interactions[j].node.dateCreated?.toLocaleString() ?? '0'
@@ -428,6 +430,7 @@ export const NodeView = (props: INodeViewProps) => {
                       time: time,
                       interactionName: interactionName,
                       interactionContent: interactionContent,
+                      interactionId: interactionId,
                     },
                   ])
                   // console.log('Google loc = ', city, state, country)

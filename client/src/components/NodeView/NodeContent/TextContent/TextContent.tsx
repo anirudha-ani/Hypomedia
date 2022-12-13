@@ -5,7 +5,7 @@ import { Link } from '@tiptap/extension-link'
 import { Editor, EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import { Button } from '../../../Button'
-
+import toast, { Toaster } from 'react-hot-toast'
 import { FrontendAnchorGateway } from '../../../../anchors'
 import {
   currentNodeState,
@@ -59,7 +59,6 @@ export const TextContent = (props: ITextContentProps) => {
   const setAlertTitle = useSetRecoilState(alertTitleState)
   const setAlertMessage = useSetRecoilState(alertMessageState)
   const [content, setContent] = useState(currentNode.content)
-  const history = useHistory()
 
   const editor = useEditor({
     extensions: [
@@ -165,6 +164,12 @@ export const TextContent = (props: ITextContentProps) => {
         setAlertIsOpen(true)
         setAlertTitle('Title update failed')
         setAlertMessage(contentUpdateResp.message)
+        toast.error('Content update failed')
+      } else {
+        // setAlertIsOpen(true)
+        // setAlertTitle('Title updated')
+        // setAlertMessage('Title updated successfully')
+        toast.success('Content updated successfully')
       }
       setRefresh(!refresh)
       setLinkMenuRefresh(!linkMenuRefresh)
@@ -266,6 +271,21 @@ export const TextContent = (props: ITextContentProps) => {
         }}
         editor={editor}
         onPointerUp={onPointerUp}
+      />
+      <Toaster
+        toastOptions={{
+          success: {
+            style: {
+              background: 'green',
+              color: '#fff',
+            },
+          },
+          error: {
+            style: {
+              background: 'red',
+            },
+          },
+        }}
       />
     </div>
   )
