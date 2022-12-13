@@ -144,7 +144,7 @@ export const AnchorItem = (props: IAnchorItemProps) => {
         )}
         {extent?.type == 'audio' && (
           <div className="anchorPreview-text">
-            {extent.timeStamp ? extent.timeStamp : 'Audio'}
+            Timestamp: {extent.timeStamp ? extent.timeStamp.toFixed(2) : 'Audio'}
           </div>
         )}
         {extent?.type == 'geo' &&

@@ -59,12 +59,20 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
       }
 
       uniqueInteractionsID.add(timeLineData[i].interactionId)
+      const div = document.createElement('div')
+      div.innerHTML = timeLineData[i].interactionContent
+      const interactionText = div.textContent || div.innerText || ''
 
       timeLineItems.push(
         <VerticalTimelineElement
           key={i.toString()}
           className="vertical-timeline-element--work"
-          contentStyle={{ background: '#b3acfc', color: '#ffffff' }}
+          contentStyle={{
+            background: '#b3acfc',
+            color: '#ffffff',
+            maxHeight: 250,
+            overflowY: 'scroll',
+          }}
           contentArrowStyle={{ borderRight: '7px solid  #b3acfc' }}
           // YYYY-MM-DDTHH:MM:SS
           date={timeLineData[i].time.slice(0, 19).replace('T', ' ')}
@@ -89,7 +97,7 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
               <h4 className="vertical-timeline-element-subtitle">
                 {`${timeLineData[i].country}`}
               </h4>
-              <p>{timeLineData[i].interactionContent}</p>
+              <p>{interactionText}</p>
             </div>{' '}
           </Link>
         </VerticalTimelineElement>

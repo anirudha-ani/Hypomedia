@@ -24,6 +24,52 @@
   }
 }
 
+.linkItem-audio {
+  user-select: none;
+  cursor: pointer;
+  height: fit-content;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: $selected-color;
+  color: black;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    background-color: darken($selected-color, 10);
+  }
+
+  &.selected {
+    background-color: white;
+    &:hover {
+      background-color: darken(white, 7);
+    }
+  }
+}
+
+.linkItem-geo {
+  user-select: none;
+  cursor: pointer;
+  height: fit-content;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: $selected-color;
+  color: black;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    background-color: darken($selected-color, 10);
+  }
+
+  &.selected {
+    background-color: white;
+    &:hover {
+      background-color: darken(white, 7);
+    }
+  }
+}
+
 .linkItem-image {
   user-select: none;
   cursor: pointer;
