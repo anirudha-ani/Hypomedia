@@ -51,9 +51,7 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
   const loadTimeline = () => {
     const timeLineItems: JSX.Element[] = []
 
-
     const uniqueInteractionsID = new Set()
-
 
     for (let i = 0; i < timeLineData.length; i++) {
       if (uniqueInteractionsID.has(timeLineData[i].interactionId)) {
@@ -69,7 +67,7 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
           contentStyle={{ background: '#b3acfc', color: '#ffffff' }}
           contentArrowStyle={{ borderRight: '7px solid  #b3acfc' }}
           // YYYY-MM-DDTHH:MM:SS
-          date={timeLineData[i].time.slice(0, 19)}
+          date={timeLineData[i].time.slice(0, 19).replace('T', ' ')}
           iconStyle={{ background: '#b3acfc', color: '#ffffff' }}
           // icon={<WorkIcon />}
         >
@@ -83,10 +81,13 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
               }}
             >
               <h3 className="vertical-timeline-element-title">
-                {timeLineData[i].interactionName}
+                <b>{timeLineData[i].interactionName}</b>
               </h3>
               <h4 className="vertical-timeline-element-subtitle">
-                {`${timeLineData[i].city}, ${timeLineData[i].country}`}
+                {`${timeLineData[i].area}, ${timeLineData[i].city}`}
+              </h4>
+              <h4 className="vertical-timeline-element-subtitle">
+                {`${timeLineData[i].country}`}
               </h4>
               <p>{timeLineData[i].interactionContent}</p>
             </div>{' '}

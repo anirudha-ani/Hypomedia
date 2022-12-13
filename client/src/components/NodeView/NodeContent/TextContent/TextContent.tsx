@@ -35,10 +35,6 @@ import {
 } from '../../../../types'
 import './TextContent.scss'
 import { TextMenu } from './TextMenu'
-import Code from '@tiptap/extension-code'
-import Document from '@tiptap/extension-document'
-import Paragraph from '@tiptap/extension-paragraph'
-import Text from '@tiptap/extension-text'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Underline } from '@tiptap/extension-underline'
 import { flexbox } from '@chakra-ui/react'
@@ -276,8 +272,8 @@ export const TextContent = (props: ITextContentProps) => {
         toastOptions={{
           success: {
             style: {
-              background: 'green',
-              color: '#fff',
+              background: '#242935',
+              color: 'white',
             },
           },
           error: {
