@@ -49,7 +49,7 @@ export const TextMenu = (props: IEditorProps) => {
       />
       <Button
         icon={<ai.AiFillHighlight />}
-        onClick={() => editor.chain().focus().toggleHighlight({ color: '#B3ACFC' }).run()}
+        onClick={() => editor.chain().focus().toggleHighlight({ color: '#ccc7fd' }).run()}
         style={customButtonStyle}
         // disabled={!editor.can().chain().focus().toggleBold().run()}
         className={
@@ -69,7 +69,7 @@ export const TextMenu = (props: IEditorProps) => {
         icon={<ai.AiFillSave />}
         onClick={() => onSave()}
         text="Save"
-        className='saveButton'
+        className="saveButton"
         // disabled={!editor.can().chain().focus().toggleBold().run()}
       />
     </div>

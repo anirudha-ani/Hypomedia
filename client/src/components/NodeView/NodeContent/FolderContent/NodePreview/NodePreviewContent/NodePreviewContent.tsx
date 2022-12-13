@@ -24,7 +24,10 @@ export const NodePreviewContent = (props: INodeContentPreviewProps) => {
     case 'geo':
       return <GeoPreviewContent />
     case 'text':
-      return <TextPreviewContent content={content} />
+      var div = document.createElement('div')
+      div.innerHTML = content
+      var text = div.textContent || div.innerText || ''
+      return <TextPreviewContent content={text} />
     case 'folder':
       return <FolderPreviewContent user={user} />
 

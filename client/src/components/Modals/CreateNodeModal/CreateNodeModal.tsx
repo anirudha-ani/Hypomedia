@@ -86,6 +86,10 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
       setError('Error: No type selected')
       return
     }
+    if (selectedType != 'folder' && selectedParentNode == null) {
+      setError('Error: No parent node selected')
+      return
+    }
     if (title.length === 0) {
       setError('Error: No title')
       return
@@ -161,7 +165,9 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
               >
                 {nodeTypes.map((type) => (
                   <option key={type} value={type}>
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                    {type == 'folder'
+                      ? 'User'
+                      : type.charAt(0).toUpperCase() + type.slice(1)}
                   </option>
                 ))}
               </Select>
@@ -213,7 +219,9 @@ export const CreateNodeModal = (props: ICreateNodeModalProps) => {
             )}
             <div style={{ marginTop: 25, padding: 10 }}>
               <span className="modal-title">
-                <div className="modal-title-header">Choose a parent node (optional):</div>
+                <div className="modal-title-header">
+                  Choose a parent node (if not User):
+                </div>
               </span>
               <div className="modal-treeView">
                 <TreeView

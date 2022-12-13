@@ -59,7 +59,12 @@ export const TextContent = (props: ITextContentProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Highlight.configure({ multicolor: true }),
+      Highlight.configure({
+        multicolor: true,
+        HTMLAttributes: {
+          class: 'highlight-class',
+        },
+      }),
       Underline,
       Link.configure({ openOnClick: true, autolink: false, linkOnPaste: false }),
     ],
