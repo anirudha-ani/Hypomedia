@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import * as ri from 'react-icons/ri'
 import { FrontendAnchorGateway } from '../../../../anchors'
 import { FrontendLinkGateway } from '../../../../links'
@@ -15,6 +15,7 @@ import {
   currentNodeState,
 } from '../../../../global/Atoms'
 import './AnchorItem.scss'
+import Geocode from 'react-geocode'
 
 export interface IAnchorItemProps {
   linkItems: any
@@ -37,6 +38,7 @@ export const AnchorItem = (props: IAnchorItemProps) => {
   const setAlertIsOpen = useSetRecoilState(alertOpenState)
   const setAlertTitle = useSetRecoilState(alertTitleState)
   const setAlertMessage = useSetRecoilState(alertMessageState)
+  const [city, setCity] = useState('')
 
   const handleAnchorDelete = async (anchorId: string) => {
     const anchorLinks = anchorsMap[anchorId].links
@@ -82,6 +84,38 @@ export const AnchorItem = (props: IAnchorItemProps) => {
     ContextMenuItems.push(menuItem)
   }
 
+  const getCity = (lat: number, lng: number) => {
+    Geocode.setApiKey('AIzaSyB8iT3_3yLhvU-5LPl6kHHi63H7yKMW-So')
+    Geocode.setLanguage('en')
+    Geocode.setRegion('es')
+    Geocode.setLocationType('ROOFTOP')
+    Geocode.enableDebug()
+
+    // Get address from latitude & longitude.
+
+    Geocode.fromLatLng(String(lat), String(lng)).then(
+      (response: any) => {
+        for (let i = 0; i < response.results[0].address_components.length; i++) {
+          for (
+            let j = 0;
+            j < response.results[0].address_components[i].types.length;
+            j++
+          ) {
+            switch (response.results[0].address_components[i].types[j]) {
+              case 'locality':
+                const cityVar = response.results[0].address_components[i].long_name
+                setCity(cityVar)
+                break
+            }
+          }
+        }
+      },
+      (error: any) => {
+        console.error(error)
+      }
+    )
+  }
+
   return (
     <div
       className={`anchorItemMenu ${isAnchorSelected ? 'selected' : ''}`}
@@ -96,13 +130,13 @@ export const AnchorItem = (props: IAnchorItemProps) => {
       }}
     >
       <div className="anchorPreview">
-        {extent !== null ? (
-          extent.type == 'text' && (
-            <div className="anchorPreview-text">{'"' + extent.text + '"'}</div>
-          )
-        ) : (
-          <div className="anchorPreview-text">{currentNode.title}</div>
-        )}
+        {extent !== null
+          ? (console.log(extent.type),
+            extent.type == 'text' && (
+              <div className="anchorPreview-text">{'"' + extent.text + '"'}</div>
+            ))
+          : (console.log('NULL EXTENT'),
+            (<div className="anchorPreview-text">{currentNode.title}</div>))}
         {extent?.type == 'image' && (
           <div className="anchorPreview-image">
             {getImagePreview(currentNode.content, extent, 40, 40)}
@@ -113,6 +147,20 @@ export const AnchorItem = (props: IAnchorItemProps) => {
             {extent.timeStamp ? extent.timeStamp : 'Audio'}
           </div>
         )}
+        {extent?.type == 'geo' &&
+          (console.log(extent.type, extent.lat),
+          (
+            <div className="anchorPreview-text">
+              {extent.lat && extent.lng ? (
+                <div>
+                  {getCity(extent.lat, extent.lng)}
+                  {city}
+                </div>
+              ) : (
+                'Geo'
+              )}
+            </div>
+          ))}
       </div>
       {linkItems}
     </div>
