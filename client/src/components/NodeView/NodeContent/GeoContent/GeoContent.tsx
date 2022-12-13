@@ -24,7 +24,9 @@ import {
   refreshLinkListState,
   isLinkingState,
 } from '../../../../global/Atoms'
+import { Extent } from '../../../../types'
 import './GeoContent.scss'
+import { type } from 'os'
 
 interface IGeoContentProps {}
 
@@ -37,13 +39,11 @@ export const GeoContent = React.memo(() => {
   })
 
   const [map, setMap] = React.useState(null)
-
   const currentNode = useRecoilValue(currentNodeState)
-
+  const [selectedExtent, setSelectedExtent] = useRecoilState(selectedExtentState)
   const latitude = currentNode.latitude
   const longitude = currentNode.longitude
   const center = { lat: latitude, lng: longitude }
-
   const onLoad = React.useCallback(function callback(map) {
     // This is just an example of getting and using the map instance!!! don't just blindly copy!
     const bounds = new window.google.maps.LatLngBounds(center)
@@ -56,7 +56,15 @@ export const GeoContent = React.memo(() => {
     setMap(null)
   }, [])
 
-  // recoil state management
+  useEffect(() => {
+    const selectedExtent: Extent = {
+      type: 'geo',
+      lat: latitude,
+      lng: longitude,
+    }
+
+    setSelectedExtent(selectedExtent)
+  }, [isLinkingState])
 
   return isLoaded ? (
     <GoogleMap mapContainerClassName="map-container" zoom={15} center={center}>
