@@ -38,7 +38,6 @@ export const FrontendNodeGateway = {
   },
   searchNode: async (searchTerm: string): Promise<IServiceResponse<INode[]>> => {
     try {
-      console.log(searchTerm)
       return await post<IServiceResponse<INode[]>>(
         baseEndpoint + servicePath + 'search',
         {

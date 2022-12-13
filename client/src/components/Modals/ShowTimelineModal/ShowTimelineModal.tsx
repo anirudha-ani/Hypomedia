@@ -70,8 +70,6 @@ export const ShowTimelineModal = (props: ICreateNodeModalProps) => {
           contentStyle={{
             background: '#b3acfc',
             color: '#ffffff',
-            maxHeight: 250,
-            overflowY: 'scroll',
           }}
           contentArrowStyle={{ borderRight: '7px solid  #b3acfc' }}
           // YYYY-MM-DDTHH:MM:SS
